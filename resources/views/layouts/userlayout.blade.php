@@ -44,11 +44,89 @@
                 <i class="fa-solid fa-toggle-off"></i>
             </div>
         </div>
-        
+        <div class="most-bottom-part">
+            <ul>
+                <li id="active">
+                    <a href=""><h3>HOME</h3></a>
+                </li>
+                <li>
+                    <a href=""><h3>MEN</h3></a>
+                </li>
+                <li>
+                    <a href=""><h3>WOMEN</h3></a>
+                </li>
+                <li>
+                    <a href=""><h3>KIDS</h3></a>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <section>
+    <div>
         @yield('content')
-    </section>
+    </div>
+    <div class="newsletter-section" style="background-image: url('/assets/newsletter-bg.jpeg');">
+        <div class="newsletter-content">
+            <span class="small-text">Newsletter</span>
+            <span class="big-text">
+                Sign up for latest updates and offers
+            </span>
+            <div class="form">
+                <input type="text" placeholder="Email Address" />
+                <button>Subscribe</button>
+            </div>
+            <span class="text">
+                Will be used in accordance with our Privacy Policy
+            </span>
+            <span class="social-icons">
+                <div class="icon">
+                    <i class="fa-brands fa-facebook"></i>
+                </div>
+                <div class="icon">
+                    <i class="fa-brands fa-twitter"></i>
+                </div>
+                <div class="icon">
+                    <i class="fa-brands fa-instagram"></i>
+                </div>
+            </span>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">about us</a></li>
+                        <li><a href="#">our services</a></li>
+                        <li><a href="#">privacy policy</a></li>
+                        <li><a href="#">affiliate program</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Get Help</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">shipping</a></li>
+                        <li><a href="#">returns</a></li>
+                        <li><a href="#">order status</a></li>
+                        <li><a href="#">payment options</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Online Shop</h4>
+                    <ul>
+                        <li><a href="#">Zip Jackets</a></li>
+                        <li><a href="#">Dresses</a></li>
+                        <li><a href="#">Jogging Pants</a></li>
+                        <li><a href="#">Hoodies</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4><i class="fa-brands fa-github"></i> nalugala-vc</h4>
+                </div>
+            </div>
+        </div>
+    </footer>
     <script src="{{ asset('js/user.js') }}"></script>
 
 </body>
