@@ -72,7 +72,7 @@ class RegisterController extends Controller
         $file = request()->profile_image;
         $filename = time() . '.' . $file->getClientOriginalExtension();
         $file->move('assets', $filename);
-       
+    
         return User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
