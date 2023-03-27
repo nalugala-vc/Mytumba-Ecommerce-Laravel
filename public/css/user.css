@@ -714,6 +714,197 @@ nav .most-bottom-part ul li a{
   font-weight: bold;
 }
 
+/*CART ITEMS*/
+.cart-holder .titles{
+  display: flex;
+  justify-content: space-evenly;
+}
+.cart-holder .main-title{
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  border-bottom: 1px solid #99999a;
 
+}
+.cart-holder .titles h4{
+  color: #99999a;
+}
+.cart-items{
+  display: flex;
+  justify-content: space-between;
+}
+.cart-item{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 69vw;
+}
+.cart-div>*{
+  margin-bottom: 20px;
+}
+.prod-container .img-container{
+  height: 150px;
+  width: 150px;
+}
+.prod-container .img-container img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.prod-container{
+  display: flex;
+  align-items: center;
+}
+.prod-container .info{
+  margin-left: 16px;
+}
+.prod-container .info>*{
+  margin: 10px;
+}
+.remove-tag{
+  background-color: #f4f8f9;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+}
+.remove-icon{
+  margin-left: 5px;
+}
+.remove-tag h5,.remove-icon{
+  color: #99999a;
+}
+.quantity-div{
+  display: flex;
+  align-items: center;
+}
+.quantity-div div{
+  border: 1px solid #99999a;
+  padding: 5px 15px;
+  margin: 0 5px;
+}
+.quantity,.price,.total{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#quantity-control{
+  font-size: 23px;
+  font-weight: bolder;
+}
+.order-summary{
+  width: 26vw;
+  background-color: #f4f8f9;
+  padding: 60px 40px;
+  position: static;
+  height: 100%;
+}
+.order-summary .items{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+.order-summary .items h4{
+  font-size: 1em;
+}
+.order-summary h2{
+  padding-bottom: 20px;
+  border-bottom: 1px solid #b4b4b8;
+}
+.promo-code{
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+}
+.promo-code input{
+  height: 30px;
+  border: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 10px;
+  margin-top: 20px;
+}
+
+.promo-code button:hover{
+  cursor: pointer;
+}
+.order-summary button{
+  width: 100%;
+  height: 40px;
+  background-color: rgb(22, 84, 107);
+  border: none;
+  color: white;
+  margin-top: 20px;
+}
+.promo-code button{
+  height: 30px;
+  width: 100px;
+  background-color:rgb(37,150,190) ;
+  color: white;
+  border: none;
+  margin-top: 20px;
+}
+/*USER FORMS*/
+#reg-form{
+  display: flex;
+  justify-content: center;
+}
+#reg-form h2{
+  margin: 20px 0;
+}
+.row {
+  display: flex;
+  justify-content: center;
+}
+.row input{
+  width: 300px;
+  height: 35px;
+  border: 1px solid #8e8c8c;
+  padding-left: 10px;
+  border-radius: 15px;
+  margin:10px 0 ;
+}
+.row #first_name,.row #last_name{
+  width: 140px;
+  margin: 10px 5px;
+}
+.row input::placeholder{
+  color: #8e8c8c;
+}
+#reg-form button{
+  height: 35px;
+  width: 310px;
+  background-color: #3C91E6;
+  border-radius: 15px;
+  color: white;
+  border: none;
+  margin-bottom: 20px;
+  margin-top: 20px;
+
+}
+#check{
+  height: 15px;
+  width: 15px;
+  margin-right: 10px;
+}
+#reg-form p{
+  color: #8e8c8c;
+  margin-right: 30px;
+}
+#reg-form a{
+  color: #3C91E6;
+  text-decoration: none;
+}
+.col-md-6{
+  display: flex;
+}
+.mb{
+  margin-bottom: 20px;
+}
+#rem{
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
 
 
