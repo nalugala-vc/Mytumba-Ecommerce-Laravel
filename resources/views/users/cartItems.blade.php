@@ -1,4 +1,4 @@
-@extends('layouts.userlayout')
+@extends('layouts.cartLayout')
 @section('content')
 <section class="cart-holder">
     <div class="cart-items">
@@ -9,43 +9,48 @@
             </div>
             <h1>Items 3</h1>
         </div>
-        <div class="titles">
-            <h4>PRODUCT DETAILS</h4>
-            <h4>QUANTITY</h4>
-            <h4>PRICE</h4>
-            <h4>TOTAL PRICE</h4>
-        </div>
-        <div class="cart-item">
-            <div class="product-details">
-                <div class="prod-container">
-                    <div class="img-container">
-                        <img src="/assets/ecomm (3).jpg"alt="Zip jacket" />
-                    </div>
-                    <div class="info">
-                        <h3>Cute outfit</h3>
-                        <h4 style="color:rgb(37,150,190)">men</h4>
-                        <div class="remove-tag">
-                            <h5>Remove</h5>
-                            <i class="fa-solid fa-trash"></i>
-                            <BsTrash class="remove-icon" onClick={()=>{}}/>
+        <table class="cart-table">
+            <tr>
+                <th>PRODUCT DETAILS</th>
+                <th>OUANTITY</th>
+                <th>PRICE</th>
+                <th>TOTAL PRICE</th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="prod-container">
+                        <div class="img-container">
+                            <img src="/assets/ecomm (3).jpg"alt="Zip jacket" />
+                        </div>
+                        <div class="info">
+                            <h3>Cute outfit</h3>
+                            <h4 style="color:rgb(37,150,190)">men</h4>
+                            <div class="remove-tag">
+                                <h5>Remove</h5>
+                                <i class="fa-solid fa-trash"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="quantity">
-                <div class="quantity-div">
-                    <i class="fa-solid fa-minus" id="quantity-control"></i>
-                    <div><p>{itemQuantity}</p></div>
-                    <i class="fa-solid fa-plus" id="quantity-control"></i>
-                </div>
-            </div>
-            <div class="price">
-                <h4>KSH. 500</h4>
-            </div>
-            <div class="total">
-                <h4>KSH. 500</h4>
-            </div>
-        </div>
+                </td>
+                <td>
+                    <div class="quantity-div">
+                        <i class="fa-solid fa-minus" id="quantity-control"></i>
+                        <div><p>1</p></div>
+                        <i class="fa-solid fa-plus" id="quantity-control"></i>
+                    </div>
+                </td>
+                <td>
+                    <div class="price">
+                        <h4>KSH. 500</h4>
+                    </div>
+                </td>
+                <td>
+                    <div class="total">
+                        <h4>KSH. 500</h4>
+                    </div>
+                </td>
+            </tr>
+        </table>
         </div>
         <div class="order-summary">
             <h2>Order Summary</h2>

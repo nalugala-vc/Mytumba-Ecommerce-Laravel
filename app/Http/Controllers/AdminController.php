@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Seller;
@@ -44,6 +45,11 @@ class AdminController extends Controller
         //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         //     'password' => ['required', 'string', 'min:8', 'confirmed'],
         // ]);
+
+        $exists=DB::table('users')->where('email', request()->email)->exists();
+        if($exists){
+            return redirect()->back()->with('error','Email already exists');
+        }
 
         $file = request()->profile_image;
         $filename = time() . '.' . $file->getClientOriginalExtension();
@@ -228,30 +234,106 @@ class AdminController extends Controller
     public function viewProducts() {
         $products = Product::all();
         return view('admin.viewProducts',[
-            'products' => $products
+            'products' => $products,
         ]);
     }
 
     public function addNewProduct(){
-        return view('admin.addNewProduct');
+        $categories = Category::all();
+        return view('admin.addNewProduct',[
+            'categories' => $categories
+        ]);
     }
 
     public function addProduct(){
-        $file = request()->profile_image;
-        $filename = time() . '.' . $file->getClientOriginalExtension();
-        $file->move('assets', $filename);
+        // dd(request());
+        $picturesArray= array();
 
-        
-            
+    
+        $files = request()->pictures;
+        foreach ( $files as $file){
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move('assets', $filename);
+            $picturesArray[] = $filename;
+        }
+
+
+        if(request()->seller_id){
+            $product['seller_id'] = request()->seller_id;
+        }
+
+        $product['name'] = request()->name;
+        $product['description'] = request()->description;
+        $product['pictures'] = implode('|', $picturesArray);
+        $product['tags'] = request()->tags;
+        $product['sizes'] = request()->sizes;
+        $product['colors'] = request()->colors;
+        $product['price'] = request()->price;
+        $product['quantity'] = request()->quantity;
+        $product['sub_category'] = request()->sub_category;
+        $product['category'] = request()->category;
+
+        $addProduct = Product::create($product);
+
+        return redirect()->route('viewProducts')->with('success','Product Added  successfully');
+
     }
 
-    public function editProduct() {
-        return view('admin.editExistingProduct');
+    public function editProduct($product) {
+        $product = Product::findOrFail($product);
+        $categories = Category::all();
+        return view('admin.editExistingProduct',[
+            'product' => $product,
+            'categories'=>$categories
+        ]);
     }
 
-    public function updateProduct() {
+    public function updateProduct($product) {
+        $picturesArray= array();
+        $updateProduct = [];
+    
+        if(request()->pictures){
+            $files = request()->pictures;
+            foreach ( $files as $file){
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $file->move('assets', $filename);
+                $picturesArray[] = $filename;
+            }
+            $updateProduct['pictures'] = implode('|', $picturesArray);
+        }
+
+        if(request()->seller_id){
+            $updateProduct['seller_id'] = request()->seller_id;
+        }
+
+        $updateProduct['name'] = request()->name;
+        $updateProduct['description'] = request()->description;
+        $updateProduct['category'] = request()->category;
+        $updateProduct['tags'] = request()->tags;
+        $updateProduct['sizes'] = request()->sizes;
+        $updateProduct['colors'] = request()->colors;
+        $updateProduct['price'] = request()->price;
+        $updateProduct['quantity'] = request()->quantity;
+        $updateProduct['sub_category'] = request()->sub_category;
+        $updateProduct['discount_present'] = request()->discount_present;
+        $updateProduct['discount_price'] = request()->discount_price;
+
+        try {
+            Product::where('id',$product)->update($updateProduct);
+            return redirect()->route('viewProducts')->with('success','Product Updated  successfully');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error','An error occurred. Try again later');
+        }
+
     }
 
-    public function deleteProduct() {
+    public function deleteProduct($product) {
+        try {
+            $product=Product::findOrFail($product);
+            $product->delete();
+            return redirect()->back()->with('success','Product Deleted  successfully');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error','An error occurred. Try again later');
+        }
     }
 }

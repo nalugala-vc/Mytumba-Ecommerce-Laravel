@@ -51,7 +51,11 @@
             @forelse($products as $product)
             <tr>
                 <td>
-                <img src="/assets/{{$product->profile_image}}" alt={product.firstName} />
+                    @php
+                    $image = DB::table('products')->where('id', $product->id)->first();
+                    $images = explode('|',$image->pictures)
+                    @endphp
+                    <img src="/assets/{{$images[0]}}" alt="{{$product->firstName}}" style="height:100px;width:100px;border-radius:0;">
 
                     <p>{{$product->name}}</p>
                 </td>
@@ -60,9 +64,9 @@
                 <td>{{$product->price}}</td>
                 <td>{{$product->shipping}}</td>
                 <td>{{$product->quantity}}</td>
-                <td><button class="edit-btn"><a href="{{ route('editSeller', ['seller' => $product->id]) }}">Edit</a></button></td>
+                <td><button class="edit-btn"><a href="{{ route('editProduct', ['product' => $product->id]) }}">Edit</a></button></td>
                 <td>
-                    <form action="{{ route('deleteSeller', ['seller' => $product->id]) }}" method="POST">
+                    <form action="{{ route('deleteProduct', ['product' => $product->id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="delete-btn">Delete</button>

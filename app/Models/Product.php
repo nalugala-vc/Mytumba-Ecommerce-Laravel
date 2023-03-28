@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function categoryP(){
+        return $this->belongsTo(Category::class, 'category');
+    }
+
+
 }

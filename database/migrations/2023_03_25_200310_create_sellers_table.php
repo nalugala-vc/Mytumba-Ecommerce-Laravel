@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('county');
             $table->string('address');
+            $table->string('store_name');
+            $table->string('store_picture');
             $table->rememberToken();
             $table->timestamps();
         });

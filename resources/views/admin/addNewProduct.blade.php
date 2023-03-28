@@ -8,135 +8,170 @@
         </li>
         <li><i class='bx bx-chevron-right' ></i></li>
         <li>
-            <a class="active" href="#">Home</a>
+            <a class="active" href="#">Products</a>
         </li>
     </ul>
 </div>
 @endsection
 @section ('content')
-<form id="editUser">
+<form id="editUser" method = "POST" action="{{ route('addProduct') }}" enctype="multipart/form-data">
+    @csrf
     <div class="edit-user">
         <div class="input-div">
             <div class="label">
                 <BiUserPlus class="icon"/>
-                <span>First Name</span>
+                <span>Name</span>
             </div>
             <input 
                 type="text"
-                name="firstName"
+                name="name"
                 autoComplete="off"
-                value={firstName}
-                onChange={onFirstNameChanged}
+                required 
+                placeholder="Name"
             />
         </div>
         <div class="input-div">
             <div class="label">
                 <BiUserCheck class="icon"/>
-                <span>Last Name</span>
+                <span>Description</span>
             </div>
             <input 
                 type="text"
-                name="lastName"
+                name="description"
                 autoComplete="off"
-                value={lastName}
-                onChange={onLastNameChanged}
+                required 
+                placeholder="Description"
             />
         </div>
         <div class="input-div">
             <div class="label">
                 <BiMailSend class="icon"/>
-                <span>Email</span>
+                <span>Pictures (max 5 images)</span>
             </div>
             <input 
-                type="email"
-                name="email"
+                type="file"
+                name="pictures[]"
                 autoComplete="off"
-                value={email}
-                onChange={onEmailChanged}
+                multiple
+                required
             />
         </div>
         <div class="input-div">
             <div class="label">
                 <RiLockPasswordFill class="icon"/>
-                <span>Password</span>
+                <span>Tags</span>
             </div>
             <input 
-                type="password"
-                name="password"
+                type="text"
+                name="tags"
                 autoComplete="off"
-                value={password}
-                onChange={onPasswordChanged}
+                required 
+                placeholder="Tags (separate with coma)"
             />
         </div>
         <div class="input-div">
             <div class="label">
                 <RiLockPasswordLine class="icon"/>
-                <span>Confirm Password</span>
+                <span>Sizes</span>
             </div>
             <input 
-                type="password"
-                name="confirmPassword"
+                type="text"
+                name="sizes"
                 autoComplete="off"
-                value={passwordConfirmation}
-                onChange={onPasswordConfirmationChanged}
-                onMouseLeave={isPasswordMatch}
+                required 
+                placeholder="Sizes(separate with comma)"
             />
         </div>
         <div class="input-div">
             <div class="label">
                 <BiImageAdd class="icon"/>
-                <span>Image</span>
+                <span>Colors</span>
             </div>
             <input 
-                type="file"
-                name="profilePicture"
-                onChange={onProfilePictureChanged}
+                type="text"
+                name="colors"
+                required 
+                placeholder="Colors (separate with commas)"
             />
         </div>
         <div class="input-div">
             <div class="label">
                 <BsFillPhoneVibrateFill class="icon"/>
-                <span>Phone Number</span>
+                <span>Price</span>
             </div>
             <input 
-                type="text"
-                name="phoneNumber"
+                type="number"
+                name="price"
                 autoComplete="off"
-                value={phoneNumber}
-                onChange={onPhoneNumberChanged}
+                required 
+                placeholder="Price"
             />
         </div>
         <div class="input-div">
             <div class="label">
                 <FaRegAddressCard class="icon"/>
-                <span>Address</span>
+                <span>Quantity</span>
             </div>
             <input 
-                type="text"
-                name="address"
+                type="number"
+                name="quantity"
                 autoComplete="off"
-                value={address}
-                onChange={onAddressChanged}
+                required 
+                placeholder="Quantity"
             />
         </div>
         <div class="input-div">
             <div class="label">
-                <MdLocationOn class="icon"/>
-                <span>County</span>
+                <MdOutlineCategory class="icon"/>
+                <span>Category</span>
+            </div>
+            <select name="category" >
+                <option value="">Select Category</option>
+                @foreach($categories as $cat)
+                <option value="{{$cat->id}}">{{$cat->category_name}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="input-div">
+            <div class="label">
+                <MdOutlineCategory class="icon"/>
+                <span>Sub-category</span>
+            </div>
+            <select name="sub_category" >
+                <option value="">Select sub-category</option>
+                <option value="zip jackets">Zip Jackets</option>
+                <option value="dresses">Dresses</option>
+                <option value="jogging pants">Jogging Pants</option>
+                <option value="hoodies">Hoodies</option>
+            </select>
+        </div>
+        <div class="input-div">
+            <div class="label">
+                <MdOutlineCategory class="icon"/>
+                <span>Discount?</span>
+            </div>
+            <select name="discount_present" >
+                <option value="">Is discount available?</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="input-div">
+            <div class="label">
+                <BsFillPhoneVibrateFill class="icon"/>
+                <span>Discount Price</span>
             </div>
             <input 
-                type="text"
-                name="county"
+                type="number"
+                name="discount_price"
                 autoComplete="off"
-                value={county}
-                onChange={onCountyChanged}
+                placeholder="0"
             />
         </div>
     </div>
     <button 
-        type="button" 
+        type="submit" 
         class="submit-btn" 
-        onClick={onSaveUserClicked}
-        >Add User</button>
+        >Add Product</button>
     </form>
 @endsection

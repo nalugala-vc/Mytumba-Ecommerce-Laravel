@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,14 +14,16 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+/*AUTH ROUTES*/
+Auth::routes();
 
+
+/*USER ROUTES*/
 Route::get('/', function () {
     return view('landingPage');
 });
-
-Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/cart',[UserController::class,'userCart'])->name('cart');
 
 /*ADMIN ROUTES*/
 Route::get('/admin',[AdminController::class,'index'])->name('admin');
@@ -43,6 +46,8 @@ Route::delete('/admin/deleteSeller/{seller}',[AdminController::class,'deleteSell
 
 /*product routes*/
 Route::get('/admin/products',[AdminController::class,'viewProducts'])->name('viewProducts');
-Route::get('/admin/editProduct/{Product}',[AdminController::class],'editProduct')->name('editProduct');
-Route::put('/admin/updateProduct/{Product}',[AdminController::class],'updateProduct')->name('updateProduct');
-Route::delete('/admin/deleteProduct/{Product}',[AdminController::class],'deleteProduct')->name('deleteProduct');
+Route::get('/admin/products/new',[AdminController::class,'addNewProduct'])->name('addNewProduct');
+Route::post('/admin/products/add',[AdminController::class,'addProduct'])->name('addProduct');
+Route::get('/admin/editProduct/{product}',[AdminController::class,'editProduct'])->name('editProduct');
+Route::put('/admin/updateProduct/{product}',[AdminController::class,'updateProduct'])->name('updateProduct');
+Route::delete('/admin/deleteProduct/{product}',[AdminController::class,'deleteProduct'])->name('deleteProduct');

@@ -1,3 +1,5 @@
+@extends('layouts.cartLayout')
+@section('content')
 <h1>Shopping Cart</h1>
 
 <div class="shopping-cart">
@@ -73,3 +75,4 @@
       <button class="checkout">Checkout</button>
 
 </div>
+@endsection
