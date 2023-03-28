@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +21,10 @@ Auth::routes();
 
 /*USER ROUTES*/
 Route::get('/', function () {
-    return view('landingPage');
+    $products = Product::inRandomOrder()->take(10)->get();
+    return view('landingPage',[
+        'products' => $products
+    ]);
 });
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/cart',[UserController::class,'userCart'])->name('cart');

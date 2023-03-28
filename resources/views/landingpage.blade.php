@@ -46,156 +46,34 @@
 <section class="categories-section">
     <h2 class="title">Top Picks for You</h2>
     <div class="categories-div">
+      @foreach ($products as $product)
+      @php
+          $image = DB::table('products')->where('id', $product->id)->first();
+          $images = explode('|',$image->pictures)
+      @endphp
         <div class="top-picks" >
             <div class="img-div">
                 <div class="cart" >
                   <i class="fa-solid fa-cart-shopping"></i>
                 </div>
-                <img src="/assets/ecomm (1).jpg" alt="Zip jacket" />
+                <img src="/assets/{{$images[0]}}" alt="Zip jacket" />
                 <div class="wish">
                   <i class="fa-regular fa-heart"></i>
                 </div>
             </div>
             <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
+                <div class="ratings">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                </div>
+                <p>{{$product->name}}</p>
+                <h4>{{$product->price}}</h4>
             </div>
         </div>
-        <div class="top-picks" >
-            <div class="img-div">
-                <div class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <img src="/assets/ecomm (2).jpg" alt="Zip jacket" />
-                <div class="wish">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-            </div>
-            <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
-            </div>
-        </div>
-        <div class="top-picks" >
-            <div class="img-div">
-                <div class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <img src="/assets/ecomm (3).jpg" alt="Zip jacket" />
-                <div class="wish">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-            </div>
-            <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
-            </div>
-        </div>
-        <div class="top-picks" >
-            <div class="img-div">
-                <div class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <img src="/assets/ecomm (4).jpg" alt="Zip jacket" />
-                <div class="wish">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-            </div>
-            <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
-            </div>
-        </div>
-        <div class="top-picks" >
-            <div class="img-div">
-                <div class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <img src="/assets/ecomm (5).jpg" alt="Zip jacket" />
-                <div class="wish">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-            </div>
-            <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
-            </div>
-        </div>
-        <div class="top-picks" >
-            <div class="img-div">
-                <div class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <img src="/assets/ecomm (6).jpg" alt="Zip jacket" />
-                <div class="wish">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-            </div>
-            <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
-            </div>
-        </div>
-        <div class="top-picks" >
-            <div class="img-div">
-                <div class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <img src="/assets/ecomm (7).jpg" alt="Zip jacket" />
-                <div class="wish">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-            </div>
-            <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
-            </div>
-        </div>
-        <div class="top-picks" >
-            <div class="img-div">
-                <div class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <img src="/assets/ecomm (8).jpg" alt="Zip jacket" />
-                <div class="wish">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-            </div>
-            <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
-            </div>
-        </div>
-        <div class="top-picks" >
-            <div class="img-div">
-                <div class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <img src="/assets/ecomm (10).jpg" alt="Zip jacket" />
-                <div class="wish">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-            </div>
-            <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
-            </div>
-        </div>
-        <div class="top-picks" >
-            <div class="img-div">
-                <div class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <img src="/assets/ecomm (11).jpg" alt="Zip jacket" />
-                <div class="wish">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-            </div>
-            <div class="info-div">
-                <p>cute outfit</p>
-                <h4>499</h4>
-            </div>
-        </div>
+        @endforeach
     </div>
 </section>
 <section class="brands-section">

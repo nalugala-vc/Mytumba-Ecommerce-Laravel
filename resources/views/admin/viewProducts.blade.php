@@ -59,7 +59,7 @@
 
                     <p>{{$product->name}}</p>
                 </td>
-                <td>{{$product->category}}</td>
+                <td>{{$product->categoryP->category_name}}</td>
                 <td>{{$product->sub_category}}</td>
                 <td>{{$product->price}}</td>
                 <td>{{$product->shipping}}</td>

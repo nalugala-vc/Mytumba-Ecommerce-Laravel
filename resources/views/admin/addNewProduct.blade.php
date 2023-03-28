@@ -30,7 +30,6 @@
             <input 
                 type="text"
                 name="name"
-                autoComplete="off"
                 required 
                 placeholder="Name"
             />
@@ -43,7 +42,6 @@
             <input 
                 type="text"
                 name="description"
-                autoComplete="off"
                 required 
                 placeholder="Description"
             />
@@ -56,7 +54,6 @@
             <input 
                 type="file"
                 name="pictures[]"
-                autoComplete="off"
                 multiple
                 required
             />
@@ -69,7 +66,6 @@
             <input 
                 type="text"
                 name="tags"
-                autoComplete="off"
                 required 
                 placeholder="Tags (separate with coma)"
             />
@@ -82,7 +78,6 @@
             <input 
                 type="text"
                 name="sizes"
-                autoComplete="off"
                 required 
                 placeholder="Sizes(separate with comma)"
             />
@@ -107,7 +102,6 @@
             <input 
                 type="number"
                 name="price"
-                autoComplete="off"
                 required 
                 placeholder="Price"
             />
@@ -120,7 +114,6 @@
             <input 
                 type="number"
                 name="quantity"
-                autoComplete="off"
                 required 
                 placeholder="Quantity"
             />
@@ -169,7 +162,6 @@
             <input 
                 type="number"
                 name="discount_price"
-                autoComplete="off"
                 placeholder="0"
             />
         </div>

@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     font-family: 'Zilla Slab', serif;
-    overflow-x: hidden;
 }
 nav{
     display: flex;
@@ -287,6 +286,9 @@ nav .most-bottom-part ul li a{
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   z-index: 999;
 }
+.ratings .fa-solid,.ratings .fa-regular{
+  color: #3C91E6;
+}
 
 .cart-popup--added {
   color: green;
@@ -294,6 +296,9 @@ nav .most-bottom-part ul li a{
 
 .cart-popup--removed {
   color: red;
+}
+.info-div>*{
+  margin-top: 10px;
 }
 
 /*BRANDS SECTION*/
