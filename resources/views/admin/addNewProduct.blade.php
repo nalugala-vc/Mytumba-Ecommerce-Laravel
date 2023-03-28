@@ -16,6 +16,11 @@
 @section ('content')
 <form id="editUser" method = "POST" action="{{ route('addProduct') }}" enctype="multipart/form-data">
     @csrf
+    @if($errors->any())
+        <span class="red" role="alert">
+            <strong>{{ $errors->first() }}</strong>
+        </span>
+    @endif
     <div class="edit-user">
         <div class="input-div">
             <div class="label">

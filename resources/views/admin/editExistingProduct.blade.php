@@ -17,6 +17,11 @@
 <form id="editUser" method = "POST" action="{{ route('updateProduct', ['product' => $product->id]) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
+    @if($errors->any())
+        <span class="red" role="alert">
+            <strong>{{ $errors->first() }}</strong>
+        </span>
+    @endif
     <div class="edit-user">
         <div class="input-div">
             <div class="label">

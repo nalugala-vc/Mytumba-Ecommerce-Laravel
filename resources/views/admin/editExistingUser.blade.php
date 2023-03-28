@@ -31,6 +31,11 @@
 <form id="editUser" action="{{ route('updateUser', ['user' => $user->id]) }}" enctype="multipart/form-data" method="POST">
 @csrf
 @method('PUT')
+@if($errors->any())
+        <span class="red" role="alert">
+            <strong>{{ $errors->first() }}</strong>
+        </span>
+    @endif
     <div class="edit-user">
         <div class="input-div">
             <div class="label">

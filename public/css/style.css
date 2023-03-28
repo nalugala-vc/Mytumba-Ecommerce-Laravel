@@ -619,6 +619,10 @@ td .delete-btn{
 	border: none;
   }
 
+  .red{
+	color: red;
+  }
+
   td .edit-btn{
     padding: 10px 35px;
     background-color: #3C91E6;

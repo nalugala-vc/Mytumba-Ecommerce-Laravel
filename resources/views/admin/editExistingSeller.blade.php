@@ -1,7 +1,7 @@
 @extends('layouts.adminLayout')
 @section ('head-title')
 <div class="left">
-    <h1>Edit User</h1>
+    <h1>Edit Seller</h1>
     <ul class="breadcrumb">
         <li>
             <a href="#">Dashboard</a>
@@ -31,6 +31,11 @@
 <form id="editUser" action="{{ route('updateSeller', ['seller' => $seller->id]) }}" enctype="multipart/form-data" method="POST">
 @csrf
 @method('PUT')
+@if($errors->any())
+        <span class="red" role="alert">
+            <strong>{{ $errors->first() }}</strong>
+        </span>
+    @endif
     <div class="edit-user">
         <div class="input-div">
             <div class="label">
@@ -150,6 +155,31 @@
                 name="county"
                 autoComplete="off"
                 value="{{$seller->county}}"
+                required
+            />
+        </div>
+        <div class="input-div">
+            <div class="label">
+                <MdLocationOn class="icon"/>
+                <span>Store Name</span>
+            </div>
+            <input 
+                type="text"
+                name="store_name"
+                autoComplete="off"
+                value="{{$seller->store_name}}"
+                placeholder="Store Name"
+                required
+            />
+        </div>
+        <div class="input-div">
+            <div class="label">
+                <BiImageAdd class="icon"/>
+                <span>Store Picture</span>
+            </div>
+            <input 
+                type="file"
+                name="store_picture"
                 required
             />
         </div>

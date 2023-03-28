@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -34,17 +36,9 @@ class AdminController extends Controller
     }
 
     public function registerUser(){
-        // dd(request());
-        // request()->validate([
-        //     'first_name' => ['required', 'string', 'max:255'],
-        //     'last_name' => ['required', 'string', 'max:255'],
-        //     'age' => ['required', 'integer'],
-        //     'phone_number' => ['required', 'string', 'max:255'],
-        //     'county' => ['required', 'string', 'max:255'],
-        //     'address' => ['required', 'string', 'max:255'],
-        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        //     'password' => ['required', 'string', 'min:8', 'confirmed'],
-        // ]);
+        request()->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
 
         $exists=DB::table('users')->where('email', request()->email)->exists();
         if($exists){
@@ -55,23 +49,20 @@ class AdminController extends Controller
         $filename = time() . '.' . $file->getClientOriginalExtension();
         $file->move('assets', $filename);
 
-        try {
-            User::create([
-                'first_name' => request()->first_name,
-                'last_name' => request()->last_name,
-                'age' => request()->age,
-                'phone_number' => request()->phone_number,
-                'county' => request()->county,
-                'address' => request()->address,
-                'profile_image' => $filename,
-                'email' => request()->email,
-                'password' => Hash::make(request()->password),
-    
-            ]);
-            return redirect()->route('viewUsers')->with('success','User Registered  successfully');
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error','An error occurred. Try again later');
-        }
+        User::create([
+            'first_name' => request()->first_name,
+            'last_name' => request()->last_name,
+            'age' => request()->age,
+            'phone_number' => request()->phone_number,
+            'county' => request()->county,
+            'address' => request()->address,
+            'profile_image' => $filename,
+            'email' => request()->email,
+            'password' => Hash::make(request()->password),
+
+        ]);
+        return redirect()->route('viewUsers')->with('success','User Registered  successfully');
+
     }
 
     public function viewUsers() {
@@ -146,39 +137,40 @@ class AdminController extends Controller
     }
 
     public function registerSeller(){
-        // dd(request());
-        // request()->validate([
-        //     'first_name' => ['required', 'string', 'max:255'],
-        //     'last_name' => ['required', 'string', 'max:255'],
-        //     'age' => ['required', 'integer'],
-        //     'phone_number' => ['required', 'string', 'max:255'],
-        //     'county' => ['required', 'string', 'max:255'],
-        //     'address' => ['required', 'string', 'max:255'],
-        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        //     'password' => ['required', 'string', 'min:8', 'confirmed'],
-        // ]);
+        request()->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $exists=DB::table('sellers')->where('email', request()->email)->exists();
+        if($exists){
+            return redirect()->back()->with('error','Email already exists');
+        }
 
         $file = request()->profile_image;
         $filename = time() . '.' . $file->getClientOriginalExtension();
         $file->move('assets', $filename);
 
-        try {
-            Seller::create([
-                'first_name' => request()->first_name,
-                'last_name' => request()->last_name,
-                'age' => request()->age,
-                'phone_number' => request()->phone_number,
-                'county' => request()->county,
-                'address' => request()->address,
-                'profile_image' => $filename,
-                'email' => request()->email,
-                'password' => Hash::make(request()->password),
-    
-            ]);
-            return redirect()->route('viewUsers')->with('success','User Registered  successfully');
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error','An error occurred. Try again later');
-        }
+        $store = request()->store_picture;
+        $storepic = time() . '.' . $store->getClientOriginalExtension();
+        $store->move('assets', $storepic);
+
+        Seller::create([
+            'first_name' => request()->first_name,
+            'last_name' => request()->last_name,
+            'age' => request()->age,
+            'phone_number' => request()->phone_number,
+            'county' => request()->county,
+            'address' => request()->address,
+            'profile_image' => $filename,
+            'email' => request()->email,
+            'store_name'=> request()->store_name,
+            'store_picture' => $storepic,
+            'password' => Hash::make(request()->password),
+
+        ]);
+
+        return redirect()->route('viewSellers')->with('success','Seller Registered  successfully');
+
     }
 
     public function editSeller($seller) {
@@ -196,6 +188,13 @@ class AdminController extends Controller
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $file->move('assets', $filename);
             $updateSeller['profile_image'] = $filename;
+        }
+
+        if(request()->hasFile('store_picture')) {
+            $file = request()->file('store_picture');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move('assets', $filename);
+            $updateSeller['store_picture'] = $filename;
         }
 
         if(request()->filled('password')){

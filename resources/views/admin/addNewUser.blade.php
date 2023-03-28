@@ -16,6 +16,11 @@
 @section ('content')
 <form id="editUser" method="POST" action="{{ route('registerUser') }}" enctype="multipart/form-data">
     @csrf
+    @if($errors->any())
+        <span class="red" role="alert">
+            <strong>{{ $errors->first() }}</strong>
+        </span>
+    @endif
     <div class="edit-user">
         <div class="input-div">
             <div class="label">
@@ -27,6 +32,7 @@
                 name="first_name"
                 autoComplete="off"
                 placeholder="First Name"
+                required
             />
         </div>
         <div class="input-div">
@@ -39,6 +45,7 @@
                 name="last_name"
                 autoComplete="off"
                 placeholder="Last Name"
+                required
             />
         </div>
         <div class="input-div">
@@ -51,6 +58,7 @@
                 name="email"
                 autoComplete="off"
                 placeholder="Email"
+                required
             />
         </div>
         <div class="input-div">
@@ -63,6 +71,7 @@
                 name="age"
                 autoComplete="off"
                 placeholder="Age"
+                required
             />
         </div>
         <div class="input-div">
@@ -75,6 +84,7 @@
                 name="password"
                 autoComplete="off"
                 placeholder="Password"
+                required
             />
         </div>
         <div class="input-div">
@@ -84,9 +94,10 @@
             </div>
             <input 
                 type="password"
-                name="confirmPassword"
+                name="password_confirmation"
                 autoComplete="off"
                 placeholder="Confirm Password"
+                required
             />
         </div>
         <div class="input-div">
@@ -110,6 +121,7 @@
                 name="phone_number"
                 autoComplete="off"
                 placeholder="Phone Number"
+                required
             />
         </div>
         <div class="input-div">
@@ -122,6 +134,7 @@
                 name="address"
                 autoComplete="off"
                 placeholder="Address"
+                required
             />
         </div>
         <div class="input-div">
@@ -134,6 +147,7 @@
                 name="county"
                 autoComplete="off"
                 placeholder="County"
+                required
             />
         </div>
     </div>
