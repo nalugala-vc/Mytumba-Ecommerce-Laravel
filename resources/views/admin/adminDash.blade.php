@@ -43,7 +43,7 @@
     <li>
         <i class='bx bxs-user-account'></i>
         <span class="text">
-            <h3>{{$totalProducts}}</h3>
+            <h3>{{$totalSellers}}</h3>
             <p>Sellers</p>
         </span>
     </li>

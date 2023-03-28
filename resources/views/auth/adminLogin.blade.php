@@ -1,10 +1,11 @@
 @extends('layouts.userForms')
 
 @section('content')
-<form method="POST" action="{{ route('submitSellerLogin') }}" enctype="multipart/form-data" id="reg-form">
+<form method="POST" action="{{ route('submitAdminLogin') }}" enctype="multipart/form-data" id="reg-form">
 @csrf
+
     <div>
-    <h2>Seller Login</h2>
+    <h2>Welcome Back Admin</h2>
     @if($errors->any())
     <span class="red" role="alert">
         <strong>{{ $errors->first() }}</strong>

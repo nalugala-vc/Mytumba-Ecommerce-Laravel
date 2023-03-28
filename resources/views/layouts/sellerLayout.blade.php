@@ -72,7 +72,7 @@
 			<li>
 				<a href="">
 					<i class="fa-solid fa-user"></i>
-					<span>{{ Auth::guard('admin')->user()->first_name }} {{ Auth::guard('admin')->user()->last_name }}</span>
+					<span>{{ Auth::guard('seller')->user()->first_name }} {{ Auth::guard('seller')->user()->last_name }}</span>
 				</a>
 			</li>
 		</ul>
@@ -100,7 +100,7 @@
 				<span class="num">8</span>
 			</a>
 			<a href="#" class="profile">
-			<img src="/assets/{{ Auth::guard('admin')->user()->profile_image }}">
+			<img src="/assets/{{ Auth::guard('seller')->user()->profile_image }}">
 
 			</a>
 		</nav>

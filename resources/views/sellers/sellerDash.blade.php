@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout')
+@extends('layouts.sellerLayout')
 @section('head-title')
 <div class="left">
     <h1>Dashboard</h1>

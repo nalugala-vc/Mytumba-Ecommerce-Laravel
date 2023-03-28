@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
     public function index() {
         $totalUsers = User::all()->count();
         $totalProducts = Product::all()->count();

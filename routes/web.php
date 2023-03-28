@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AdminLoginController;
+use App\Http\Controllers\Auth\SellerLoginController;
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UserController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 */
 /*AUTH ROUTES*/
 Auth::routes();
+Route::get('/adminLogin',[AdminLoginController::class,'showLoginForm'])->name('adminLoginForm');
+Route::post('/adminLoginSubmit',[AdminLoginController::class,'login'])->name('submitAdminLogin');
+Route::get('/sellerLogin',[SellerLoginController::class,'showLoginForm'])->name('adminLoginForm');
+Route::post('/sellerLoginSubmit',[SellerLoginController::class,'login'])->name('submitSellerLogin');
 
 
 /*USER ROUTES*/
@@ -28,6 +35,9 @@ Route::get('/', function () {
 });
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/cart',[UserController::class,'userCart'])->name('cart');
+
+/*SELLER ROUTES*/
+Route::get('/seller',[SellerController::class,'index'])->name('seller');
 
 /*ADMIN ROUTES*/
 Route::get('/admin',[AdminController::class,'index'])->name('admin');
@@ -55,3 +65,5 @@ Route::post('/admin/products/add',[AdminController::class,'addProduct'])->name('
 Route::get('/admin/editProduct/{product}',[AdminController::class,'editProduct'])->name('editProduct');
 Route::put('/admin/updateProduct/{product}',[AdminController::class,'updateProduct'])->name('updateProduct');
 Route::delete('/admin/deleteProduct/{product}',[AdminController::class,'deleteProduct'])->name('deleteProduct');
+
+
