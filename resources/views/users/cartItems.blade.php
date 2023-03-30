@@ -1,5 +1,20 @@
 @extends('layouts.cartLayout')
 @section('content')
+@if (session('success'))
+<div
+    class="cart-popup-success"
+    >
+    {{ session('success') }}
+    </div>
+@endif
+@if (session('error'))
+<div
+    class="cart-popup-error"
+    >
+    {{ session('error') }}
+    </div>
+@endif
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <section class="cart-holder">
     <div class="cart-items">
         <div class="cart-div"style="padding:0 60px">
@@ -16,51 +31,64 @@
                 <th>PRICE</th>
                 <th>TOTAL PRICE</th>
             </tr>
-            <tr>
-                <td>
-                    <div class="prod-container">
-                        <div class="img-container">
-                            <img src="/assets/ecomm (3).jpg"alt="Zip jacket" />
-                        </div>
-                        <div class="info">
-                            <h3>Cute outfit</h3>
-                            <h4 style="color:rgb(37,150,190)">men</h4>
-                            <div class="remove-tag">
-                                <h5>Remove</h5>
-                                <i class="fa-solid fa-trash"></i>
+            @forelse($cartItems as $cartItem)
+                @php
+                    $image = DB::table('products')->where('id', $cartItem->product_id)->first();
+                    $images = explode('|',$image->pictures)
+                @endphp
+                <tr>
+                    <td>
+                        <div class="prod-container">
+                            <div class="img-container">
+                                <img src="/assets/{{$images[0]}}" alt="Zip jacket" />
+                            </div>
+                            <div class="info">
+                                <h3>{{$cartItem->product->name}}</h3>
+                                <h4 style="color:rgb(37,150,190)">{{$cartItem->product->categoryP->category_name}}</h4>
+                                <form action="{{ route('removeFromCart', ['cartItem' => $cartItem->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="remove-tag">
+                                        <h5>Remove</h5>
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="quantity-div">
-                        <i class="fa-solid fa-minus" id="quantity-control"></i>
-                        <div><p>1</p></div>
-                        <i class="fa-solid fa-plus" id="quantity-control"></i>
-                    </div>
-                </td>
-                <td>
-                    <div class="price">
-                        <h4>KSH. 500</h4>
-                    </div>
-                </td>
-                <td>
-                    <div class="total">
-                        <h4>KSH. 500</h4>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                    <td>
+                        <div class="quantity-div">
+                            <button type="button" id="subtract-{{$cartItem->id}}"><i class="fa-solid fa-minus" class="quantity-control"></i></button>
+                            <div><p id="quantity-{{$cartItem->id}}">1</p></div>
+                            <button type="button" id="add-{{$cartItem->id}}"><i class="fa-solid fa-plus" class="quantity-control"></i></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="price">
+                            <h4 id="price-{{$cartItem->id}}">{{$cartItem->product->price}}</h4>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="total">
+                            <h4 id="total-{{$cartItem->id}}"> {{$cartItem->product->price}}</h4>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <h2>No items in cart</h2>
+            @endforelse
+
         </table>
         </div>
         <div class="order-summary">
             <h2>Order Summary</h2>
             <div class="items">
-                <h4>ITEMS 3</h4>
-                <h4>KSH. 838.90</h4>
+                <h4>ITEMS  {{$cartItem->count()}}</h4>
+                <h4>KSH. <p id="order-subtotal">838.90</p></h4>
             </div>
             <div class="items">
                 <h4>SHIPPING</h4>
-                <h4>KSH. 838.90</h4>
+                <h4>KSH. 00</h4>
             </div>
             <div class="promo-code">
                 <h4>PROMO CODE</h4>
@@ -69,10 +97,112 @@
             </div>
             <div class="items">
                 <h4>TOTAL COST</h4>
-                <h4>KSH. 838.90</h4>
+                <h4>KSH. <p id="order-total"></p></h4>
             </div>
-            <button>CHECKOUT</button>
+            <button id="checkout">CHECKOUT</button>
         </div>
     </div>
 </section>
+<script>
+    const cartItems = @json($cartItems);
+var orderTotal = 0;
+
+cartItems.forEach(item => {
+    const removeItems = document.getElementById(`subtract-${item.id}`);
+    const addItems = document.getElementById(`add-${item.id}`);
+    const quantityElement = document.getElementById(`quantity-${item.id}`);
+    const priceElement = parseFloat(item.product.price); // convert to number
+    const totalElement = document.getElementById(`total-${item.id}`);
+    
+    // Add the price of the current item to the order total
+    orderTotal += priceElement * parseInt(quantityElement.innerText);
+
+    addItems.addEventListener('click', function() {
+        var quantity = parseInt(quantityElement.innerText);
+        var price = parseFloat(priceElement);
+
+        // Subtract the previous total for this item
+        var previousTotal = quantity * price;
+        orderTotal -= previousTotal;
+
+        // Increase the quantity by 1
+        quantity++;
+
+        // Calculate the new total price
+        var total = (quantity * price).toFixed(2);
+
+        // Update the quantity and total elements
+        quantityElement.innerText = quantity;
+        totalElement.innerText = 'KSH. ' + total;
+
+        // Add the new total for this item
+        orderTotal += parseFloat(total);
+        
+        // Update the order total
+        updateOrderTotal();
+    });
+    
+    removeItems.addEventListener('click', function() {
+        var quantity = parseInt(quantityElement.innerText);
+        var price = parseFloat(priceElement);
+
+        // Subtract the previous total for this item
+        var previousTotal = quantity * price;
+        orderTotal -= previousTotal;
+
+        // Decrease the quantity by 1, but ensure it doesn't go below 1
+        quantity = Math.max(1, quantity - 1);
+
+        // Calculate the new total price
+        var total = (quantity * price).toFixed(2);
+
+        // Update the quantity and total elements
+        quantityElement.innerText = quantity;
+        totalElement.innerText = 'KSH. ' + total;
+
+        // Add the new total for this item
+        orderTotal += parseFloat(total);
+        
+        // Update the order total
+        updateOrderTotal();
+    });
+
+});
+
+// Display the order total in a paragraph tag
+const orderTotalElement = document.getElementById('order-total');
+orderTotalElement.innerText = 'KSH. ' + orderTotal.toFixed(2);
+
+function updateOrderTotal() {
+    // Update the order total
+    const orderTotalElement = document.getElementById('order-total');
+    orderTotalElement.innerText = 'KSH. ' + orderTotal.toFixed(2);
+}
+
+const checkoutElement = document.getElementById('checkout');
+
+checkoutElement.addEventListener('click',function(event) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    fetch('/orderItems', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrfToken
+    },
+    body: JSON.stringify({
+        orderTotal: orderTotal
+    })
+})
+.then(response => {
+    // Handle the response from the server
+    console.log(response);
+})
+.catch(error => {
+    // Handle any errors that occur
+    console.error(error);
+});
+});
+
+</script>
+
 @endsection

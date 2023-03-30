@@ -1,6 +1,20 @@
 @extends('layouts.userlayout')
 
 @section('content')
+@if (session('success'))
+<div
+    class="cart-popup-success"
+    >
+    {{ session('success') }}
+    </div>
+@endif
+@if (session('error'))
+<div
+    class="cart-popup-error"
+    >
+    {{ session('error') }}
+    </div>
+@endif
 <section class="main-banner">
   <div class="carousel" data-carousel>
     <button class="carousel-button prev" data-carousel-button = "prev"><i class="fa-solid fa-caret-left"></i></button>
@@ -41,9 +55,8 @@
       <img src="/assets/zip.png" alt="Zip jacket" />
       <h3>zip jackets</h3>
       <p>get the best deals on zip jackets </p>
-  </div>
 </section>
-<section class="categories-section">
+<section class="categories-section" id="top-picks">
     <h2 class="title">Top Picks for You</h2>
     <div class="categories-div">
       @foreach ($products as $product)
@@ -51,15 +64,24 @@
           $image = DB::table('products')->where('id', $product->id)->first();
           $images = explode('|',$image->pictures)
       @endphp
+        <a href="{{ route('productView', ['product' => $product->id]) }}">
         <div class="top-picks" >
             <div class="img-div">
-                <div class="cart" >
+              <form action="{{ route('addToCart') }}" method="POST">
+              @csrf
+              <input type="hidden" name="product_id" value="{{$product->id}}">
+                <button class="cart" >
                   <i class="fa-solid fa-cart-shopping"></i>
-                </div>
+                </button>
+                </form>
                 <img src="/assets/{{$images[0]}}" alt="Zip jacket" />
-                <div class="wish">
+                <form action="{{ route('addToCart') }}" method="POST">
+                  @csrf
+                  <input type="hidden" name="product_id" value="{{$product->id}}">
+                <button class="wish">
                   <i class="fa-regular fa-heart"></i>
-                </div>
+                </button>
+                </form>
             </div>
             <div class="info-div">
                 <div class="ratings">
@@ -73,6 +95,7 @@
                 <h4>{{$product->price}}</h4>
             </div>
         </div>
+        </a>
         @endforeach
     </div>
 </section>

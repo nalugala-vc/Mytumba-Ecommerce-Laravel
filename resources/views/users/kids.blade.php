@@ -1,9 +1,9 @@
 @extends('layouts.userlayout')
 
 @section('content')
-<section class="product-banner" style="background-image: url('/assets/women-banner.jpg');" >
+<section class="product-banner" style="background-image: url('/assets/kids.jpg');" >
     <div class="banner-name">
-        <h2>WOMEN IN STYLE</h2>
+        <h2>KIDS IN STYLE</h2>
     </div>
 </section>
 <section class="products-refine" id="products-cat">
@@ -95,7 +95,7 @@
                 <img src="/assets/{{$images[0]}}" alt="Zip jacket" />
                 <form action="">
                   @csrf
-                <input type="hidden" name="product_id" value="{{$product->id}}">
+                    <input type="hidden" name="product_id" value="{{$product->id}}">
                 <button class="wish">
                   <i class="fa-regular fa-heart"></i>
                 </button>

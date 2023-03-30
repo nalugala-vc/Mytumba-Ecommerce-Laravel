@@ -33,8 +33,18 @@ Route::get('/', function () {
         'products' => $products
     ]);
 });
+Route::get('/product/{product}',[UserController::class,'productView'])->name('productView');
+Route::get('/women',[UserController::class,'womenProducts'])->name('women');
+Route::get('/men',[UserController::class,'menProducts'])->name('men');
+Route::get('/kids',[UserController::class,'kidsProducts'])->name('kids');
+Route::get('/cart',[UserController::class,'userCart'])->name('cart');
+Route::post('/addToCart',[UserController::class,'addToCart'])->name('addToCart');
+Route::delete('/removeFromCart/{cartItem}',[UserController::class,'removeFromCart'])->name('removeFromCart');
+Route::post('/addWish',[UserController::class,'addToWishList'])->name('addToWishList');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/cart',[UserController::class,'userCart'])->name('cart');
+Route::post('/orderItems',[UserController::class,'orderItems'])->name('orderItems');
 
 /*SELLER ROUTES*/
 Route::get('/seller',[SellerController::class,'index'])->name('seller');
