@@ -28,3 +28,22 @@ buttons.forEach(button => {
     startCarousel();
   });
 });
+
+/* Function to close navigation menu */
+function closeMenu() {
+  menu.classList.remove("open-menu");
+  body.style.overflow = "visible";
+  bodyOverlay.classList.remove("open-overlay");
+  menuBtnImg.src = "images/icon-menu.svg";
+}
+
+/* Function to open navigation menu */
+
+function openMenu() {
+  menu.classList.add(".open-menu");
+  menuBtnImg.src = "images/icon-close.svg";
+  body.style.overflow = "hidden";
+  cart.classList.remove("open-cart");
+  bodyOverlay.classList.add("open-overlay");
+}
+

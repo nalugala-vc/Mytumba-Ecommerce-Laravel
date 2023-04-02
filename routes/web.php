@@ -44,7 +44,11 @@ Route::post('/addWish',[UserController::class,'addToWishList'])->name('addToWish
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/cart',[UserController::class,'userCart'])->name('cart');
-Route::post('/orderItems',[UserController::class,'orderItems'])->name('orderItems');
+Route::post('/orderItems',[UserController::class,'orderItems'])->name('order');
+Route::get('/confirmOrder',[UserController::class,'confirmOrder'])->name('confirmOrder');
+Route::post('/order',[UserController::class,'order'])->name('order');
+Route::post('/lipaNaMpesa',[UserController::class,'lipaNaMpesa'])->name('lipaNaMpesa');
+Route::get('/malipo/{orderId}',[UserController::class,'malipo'])->name('malipo');
 
 /*SELLER ROUTES*/
 Route::get('/seller',[SellerController::class,'index'])->name('seller');

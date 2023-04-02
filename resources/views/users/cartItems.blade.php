@@ -22,7 +22,7 @@
             <div>
                 <h1>Shopping cart</h1>
             </div>
-            <h1>Items 3</h1>
+            <h1>Items {{$cartItems->count()}}</h1>
         </div>
         <table class="cart-table">
             <tr>
@@ -105,7 +105,10 @@
 </section>
 <script>
     const cartItems = @json($cartItems);
-var orderTotal = 0;
+    const numberOfItems = <?php echo count($cartItems); ?>;
+    let itemData = cartItems.map(item => ({ id: item.id, quantity: 1 ,name:item.product.name,totalPrice: item.product.price}));
+
+    var orderTotal = 0;
 
 cartItems.forEach(item => {
     const removeItems = document.getElementById(`subtract-${item.id}`);
@@ -137,9 +140,18 @@ cartItems.forEach(item => {
 
         // Add the new total for this item
         orderTotal += parseFloat(total);
+
+         // Update the quantity in the itemData array
+        const itemIndex = itemData.findIndex(i => i.id === item.id);
+        if (itemIndex !== -1) {
+            itemData[itemIndex].quantity = quantity;
+            itemData[itemIndex].totalPrice = total;
+        }
         
         // Update the order total
         updateOrderTotal();
+
+        console.log('itemData',itemData)
     });
     
     removeItems.addEventListener('click', function() {
@@ -162,9 +174,18 @@ cartItems.forEach(item => {
 
         // Add the new total for this item
         orderTotal += parseFloat(total);
+
+        // Update the quantity in the itemData array
+        const itemIndex = itemData.findIndex(i => i.name === item.name);
+            if (itemIndex !== -1) {
+                itemData[itemIndex].quantity = quantity;
+                itemData[itemIndex].totalPrice = total;
+            }
         
         // Update the order total
         updateOrderTotal();
+
+        console.log('itemData',itemData);
     });
 
 });
@@ -183,6 +204,7 @@ const checkoutElement = document.getElementById('checkout');
 
 checkoutElement.addEventListener('click',function(event) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    console.log(csrfToken);
     fetch('/orderItems', {
     method: 'POST',
     headers: {
@@ -190,16 +212,20 @@ checkoutElement.addEventListener('click',function(event) {
         'X-CSRF-TOKEN': csrfToken
     },
     body: JSON.stringify({
-        orderTotal: orderTotal
+        orderTotal: orderTotal,
+        items: JSON.stringify(itemData),
     })
 })
 .then(response => {
     // Handle the response from the server
+    if (response.redirected) {
+        window.location.href = response.url;
+    }
     console.log(response);
 })
 .catch(error => {
     // Handle any errors that occur
-    console.error(error);
+    console.error(error.message);
 });
 });
 
