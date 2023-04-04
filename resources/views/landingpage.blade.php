@@ -15,6 +15,7 @@
     {{ session('error') }}
     </div>
 @endif
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <section class="main-banner">
   <div class="carousel" data-carousel>
     <button class="carousel-button prev" data-carousel-button = "prev"><i class="fa-solid fa-caret-left"></i></button>
@@ -67,19 +68,19 @@
         <a href="{{ route('productView', ['product' => $product->id]) }}">
         <div class="top-picks" >
             <div class="img-div">
-              <form action="{{ route('addToCart') }}" method="POST">
-              @csrf
-              <input type="hidden" name="product_id" value="{{$product->id}}">
-                <button class="cart" >
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </button>
-                </form>
+            <form id="addToCartForm-{{$product->id}}">
+                @csrf
+                <input type="hidden" name="product_id" value="{{$product->id}}">
+                <button class="cart" id="addToCart-{{$product->id}}" onclick="addToCart({{$product->id}})">
+                  <i class="uil uil-shopping-cart"></i>
+                </button> 
+            </form>
                 <img src="/assets/{{$images[0]}}" alt="Zip jacket" />
                 <form action="{{ route('addToCart') }}" method="POST">
                   @csrf
                   <input type="hidden" name="product_id" value="{{$product->id}}">
                 <button class="wish">
-                  <i class="fa-regular fa-heart"></i>
+                  <i class="uil uil-heart"></i>
                 </button>
                 </form>
             </div>
@@ -92,7 +93,14 @@
                 <i class="fa-regular fa-star"></i>
                 </div>
                 <p>{{$product->name}}</p>
-                <h4>{{$product->price}}</h4>
+                <h4>
+                    @if($product->discount_present == "true")
+                        {{$product->discount_price}}
+                        <span id="cancelled">{{$product->price}}</span>
+                    @else
+                        {{$product->price}}
+                    @endif
+                    </h4>
             </div>
         </div>
         </a>
@@ -198,6 +206,50 @@
         <img src='/assets/ecomm (9).jpg' alt="Zip jacket" />
     </div>
 </section>
+<script src="{{ asset('js/imageSlider.js') }}"></script>
+<script>
+  function addToCart(productId) {
+  // Prevent the default behavior of the button
+  event.preventDefault();
 
+  // Submit the form using AJAX
+  var form = document.getElementById('addToCartForm-' + productId);
+  var formData = new FormData(form);
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '{{ route('addToCart') }}', true);
+  xhr.onload = function () {
+    // Handle the response from the server
+    var response = JSON.parse(xhr.responseText);
+    if (response.status === 'success' && response.statuscode === 200) {
+          var successMsg = document.createElement('div');
+          successMsg.classList.add('cart-popup-success');
+          successMsg.textContent = 'Item added to cart!';
+          document.body.appendChild(successMsg);
+          setTimeout(function () {
+            successMsg.style.display = 'none';
+          }, 3000);
+    } else if(response.status === 'error' && response.statuscode === 403){
+        var errorMsg = document.createElement('div');
+        errorMsg.classList.add('cart-popup-error');
+        errorMsg.textContent = 'Item already in cart.';
+        document.body.appendChild(errorMsg);
+        setTimeout(function () {
+          errorMsg.style.display = 'none';
+        }, 3000);
+    }else{
+      var errorMsg = document.createElement('div');
+      errorMsg.classList.add('cart-popup-error');
+      errorMsg.textContent = 'An error occurred while adding the item to cart.';
+      document.body.appendChild(errorMsg);
+      setTimeout(function () {
+        errorMsg.style.display = 'none';
+      }, 3000);
+    }
+  };
+  xhr.send(formData);
+}
+
+
+</script>
 
 @endsection

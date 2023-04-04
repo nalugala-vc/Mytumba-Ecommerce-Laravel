@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AdminLoginController extends Controller
 {
@@ -20,7 +22,13 @@ class AdminLoginController extends Controller
 
     public function showLoginForm()
     {
-      return view('auth.adminLogin');
+      $cartCount = 0;
+      if(Auth::user()){
+          $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+      }
+      return view('auth.adminLogin',[
+        'cartCount' => $cartCount
+      ]);
     }
 
     public function login()

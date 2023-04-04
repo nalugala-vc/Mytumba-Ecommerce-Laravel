@@ -45,9 +45,6 @@ searchButton.addEventListener('click', function (e) {
 })
 
 
-
-
-
 if(window.innerWidth < 768) {
 	sidebar.classList.add('hide');
 } else if(window.innerWidth > 576) {
@@ -74,3 +71,21 @@ switchMode.addEventListener('change', function () {
 		document.body.classList.remove('dark');
 	}
 })
+
+//popup timer
+const successMessage = document.querySelector('.cart-popup-success');
+  const errorMessage = document.querySelector('.cart-popup-error');
+  
+  // set timer for success message
+  if (successMessage) {
+    setTimeout(function() {
+      successMessage.style.display = 'none';
+    }, 3000); // 3 seconds
+  }
+  
+  // set timer for error message
+  if (errorMessage) {
+    setTimeout(function() {
+      errorMessage.style.display = 'none';
+    }, 3000); // 3 seconds
+  }

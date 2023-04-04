@@ -19,34 +19,42 @@
 @endsection
 @section('content')
 <ul class="box-info">
-    <li>
-        <i class='bx bxs-dollar-circle' ></i>
-        <span class="text">
-            <h3>{{$totalOrders}}</h3>
-            <p>Orders</p>
-        </span>
-    </li>
-    <li>
-        <i class='bx bxs-group' ></i>
-        <span class="text">
-            <h3>{{$totalUsers}}</h3>
-            <p>Users</p>
-        </span>
-    </li>
-    <li>
-        <i class='bx bxs-calendar-check' ></i>
-        <span class="text">
-            <h3>{{$totalProducts}}</h3>
-            <p>Products</p>
-        </span>
-    </li>
-    <li>
-        <i class='bx bxs-user-account'></i>
-        <span class="text">
-            <h3>{{$totalSellers}}</h3>
-            <p>Sellers</p>
-        </span>
-    </li>
+    <a href="">
+        <li>
+            <i class='bx bxs-dollar-circle' ></i>
+            <span class="text">
+                <h3>{{$totalOrders}}</h3>
+                <p>Orders</p>
+            </span>
+        </li>
+    </a>
+    <a href="/admin/users">
+        <li>
+            <i class='bx bxs-group' ></i>
+            <span class="text">
+                <h3>{{$totalUsers}}</h3>
+                <p>Users</p>
+            </span>
+        </li>
+    </a>
+    <a href="/admin/products">
+        <li>
+            <i class='bx bxs-calendar-check' ></i>
+            <span class="text">
+                <h3>{{$totalProducts}}</h3>
+                <p>Products</p>
+            </span>
+        </li>
+    </a>
+    <a href="/admin/sellers">
+        <li>
+            <i class='bx bxs-user-account'></i>
+            <span class="text">
+                <h3>{{$totalSellers}}</h3>
+                <p>Sellers</p>
+            </span>
+        </li>
+    </a>
 </ul>
 <div class="table-data">
     <div class="order">

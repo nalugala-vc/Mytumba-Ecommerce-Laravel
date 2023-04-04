@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\SellerLoginController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UserController;
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
@@ -29,10 +30,17 @@ Route::post('/sellerLoginSubmit',[SellerLoginController::class,'login'])->name('
 /*USER ROUTES*/
 Route::get('/', function () {
     $products = Product::inRandomOrder()->take(10)->get();
+    $cartCount = 0;
+    if(Auth::user()){
+        $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+    }
+   
     return view('landingPage',[
-        'products' => $products
+        'products' => $products,
+        'cartCount' => $cartCount
     ]);
 });
+
 Route::get('/product/{product}',[UserController::class,'productView'])->name('productView');
 Route::get('/women',[UserController::class,'womenProducts'])->name('women');
 Route::get('/men',[UserController::class,'menProducts'])->name('men');
@@ -44,11 +52,16 @@ Route::post('/addWish',[UserController::class,'addToWishList'])->name('addToWish
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/cart',[UserController::class,'userCart'])->name('cart');
+Route::get('/cart/count',[UserController::class,'getCartCount'])->name('cart.count');
 Route::post('/orderItems',[UserController::class,'orderItems'])->name('order');
 Route::get('/confirmOrder',[UserController::class,'confirmOrder'])->name('confirmOrder');
 Route::post('/order',[UserController::class,'order'])->name('order');
 Route::post('/lipaNaMpesa',[UserController::class,'lipaNaMpesa'])->name('lipaNaMpesa');
 Route::get('/malipo/{orderId}',[UserController::class,'malipo'])->name('malipo');
+Route::get('/filter/women/{param}',[UserController::class,'filterWomen'])->name('filterWomen');
+Route::get('filter/men/{param}',[UserController::class,'filterMen'])->name('filterMen');
+Route::get('filter/kids/{param}',[UserController::class,'filterKids'])->name('filterKids');
+
 
 /*SELLER ROUTES*/
 Route::get('/seller',[SellerController::class,'index'])->name('seller');
@@ -79,5 +92,13 @@ Route::post('/admin/products/add',[AdminController::class,'addProduct'])->name('
 Route::get('/admin/editProduct/{product}',[AdminController::class,'editProduct'])->name('editProduct');
 Route::put('/admin/updateProduct/{product}',[AdminController::class,'updateProduct'])->name('updateProduct');
 Route::delete('/admin/deleteProduct/{product}',[AdminController::class,'deleteProduct'])->name('deleteProduct');
+
+/*orders routes */
+Route::get('/admin/Orders',[AdminController::class,'viewOrders'])->name('viewOrders');
+Route::get('/admin/Orders/new',[AdminController::class,'addNewOrder'])->name('addNewOrder');
+Route::post('/admin/Orders/add',[AdminController::class,'addOrder'])->name('addOrder');
+Route::get('/admin/editOrder/{Order}',[AdminController::class,'editOrder'])->name('editOrder');
+Route::put('/admin/updateOrder/{Order}',[AdminController::class,'updateOrder'])->name('updateOrder');
+Route::delete('/admin/deleteOrder/{Order}',[AdminController::class,'deleteOrder'])->name('deleteOrder');
 
 

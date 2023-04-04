@@ -12,9 +12,9 @@
         </li>
     </ul>
 </div>
-<a href="#" class="btn-download">
-    <i class='bx bxs-cloud-download' ></i>
-    <span class="text">Download PDF</span>
+<a href="{{ route('addNewSeller')}}" class="btn-download">
+    <i class='bx bxs-user-plus'></i>
+    <span class="text">Add new seller</span>
 </a>
 @endsection
 @section('content')

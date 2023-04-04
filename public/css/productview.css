@@ -388,12 +388,22 @@
   /////////////////////// */
   
   .item {
-    padding: 0 3rem;
+    padding: 80px 3rem 0px 3rem;
     max-width: 134rem;
     margin: auto;
     display: grid;
     grid-template-columns: 0.8fr 1fr;
     gap: 10rem;
+  }
+  .price-cart__btn i{
+    font-size: 25px;
+  }
+  .price-btn i{
+    font-size: 25px;
+    color: #3C91E6;
+  }
+  #quantity{
+    display: none;
   }
   
   /* Left img container stylling */
@@ -407,6 +417,7 @@
   .img-main img{
     height: 100%;
     width: 100%;
+    border-radius: 20px;
     object-fit: cover;
   }
   
@@ -546,7 +557,7 @@
   }
   
   .price-btns {
-    width: 30%;
+    width: 40%;
     padding: 1.5rem 1.25rem;
     border: none;
     background-color: var(--light-grayish-blue);

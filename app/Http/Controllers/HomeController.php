@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $products = Product::inRandomOrder()->take(10)->get();
+        $cartCount = 0;
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
+    
+        return view('landingPage',[
+            'products' => $products,
+            'cartCount' => $cartCount
+        ]);
     }
 }

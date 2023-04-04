@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
@@ -277,6 +278,8 @@ class AdminController extends Controller
         $product['quantity'] = request()->quantity;
         $product['sub_category'] = request()->sub_category;
         $product['category'] = request()->category;
+        $product['discount_present'] = request()->discount_present;
+        $product['discount_price'] = request()->discount_price;
 
         $addProduct = Product::create($product);
 
@@ -333,12 +336,13 @@ class AdminController extends Controller
     }
 
     public function deleteProduct($product) {
-        try {
-            $product=Product::findOrFail($product);
-            $product->delete();
-            return redirect()->back()->with('success','Product Deleted  successfully');
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error','An error occurred. Try again later');
+        $product = Product::findOrFail($product);
+        $cartItems = Cart::where('product_id', $product->id)->get();
+        foreach ($cartItems as $cartItem) {
+            $cartItem->delete();
         }
+        $product->delete();
+        return redirect()->back()->with('success', 'Product deleted successfully');
+
     }
 }

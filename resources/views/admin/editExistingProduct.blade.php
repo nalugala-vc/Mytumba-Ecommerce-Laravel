@@ -12,6 +12,10 @@
         </li>
     </ul>
 </div>
+<a href="{{ route('viewProducts')}}" class="btn-download">
+    <i class='bx bxs-shopping-bags' ></i>
+    <span class="text">View Products</span>
+</a>
 @endsection
 @section ('content')
 <form id="editUser" method = "POST" action="{{ route('updateProduct', ['product' => $product->id]) }}" enctype="multipart/form-data">

@@ -10,26 +10,58 @@
     <script src="https://kit.fontawesome.com/e54abc54b9.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Fasthand&family=Inter+Tight:ital,wght@0,400;0,600;0,700;1,400&family=Island+Moments&family=Just+Another+Hand&family=Pacifico&family=Poppins:ital,wght@0,400;1,600&family=Rubik:wght@400;500;700&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;1,500&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
+@if (session('success'))
+<div
+    class="cart-popup-success"
+    >
+    {{ session('success') }}
+    </div>
+@endif
+@if (session('error'))
+<div
+    class="cart-popup-error"
+    >
+    {{ session('error') }}
+    </div>
+@endif
     <nav>
-        <div class="bottom-part">
-            <span class="logo">
-                <i class="fa-solid fa-dove"></i>
-                <h2>Mytumba</h2>
-            </span>
-            <div class="search-div">
-                <input type="text" name="" id="" placeholder="search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            <div class="controls">
-                <i class="fa-regular fa-heart"></i>
-                <i class="fa-solid fa-cart-shopping"></i>
-                <i class="fa-solid fa-toggle-off"></i>
-            </div>
+    <div class="logo">
+      <a href="/">Mytumba</a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/men">MEN</a></li>
+      <li><a href="/women">WOMEN</a></li>
+      <li><a href="/kids">KIDS</a></li>
+    </ul>
+    <div class="nav-icons">
+        <div class="cart">
+        <a href="/cart">
+            <i class="uil uil-shopping-cart"></i>
+            @if(Auth::user())
+            <div class="cart-notification">{{$cartCount}}</div>
+            @endif
+        </a>
         </div>
+        <div class="profile">
+        @if(Auth::user())
+            <img src="/assets/{{Auth::user()->profile_image}}" alt="">
+        @else 
+            <a href="#"><i class="uil uil-user-circle"></i></a>
+        
+        @endif
+        </div>
+    </div>
+    <div class="burger">
+      <div class="line1"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
+    </div>
+
     </nav>
     <div>
         @yield('content')

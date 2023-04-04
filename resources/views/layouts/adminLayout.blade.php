@@ -16,55 +16,61 @@
 	<title>AdminHub</title>
 </head>
 <body>
-
-
+@if (session('success'))
+<div
+    class="cart-popup-success"
+    >
+    {{ session('success') }}
+    </div>
+@endif
+@if (session('error'))
+<div
+    class="cart-popup-error"
+    >
+    {{ session('error') }}
+    </div>
+@endif
 	<!-- SIDEBAR -->
 	<section id="sidebar">
-		<a href="#" class="brand">
+		<a href="{{ route('admin') }}" class="brand">
             <i class="fa-solid fa-dove"></i>
 			<span class="text">Mytumba</span>
 		</a>
 		<ul class="side-menu top">
-			<li class="active">
-				<a href="#">
+			<li class="{{ Request::is('admin') ? 'active' : '' }}">
+				<a href="{{ route('admin') }}">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
-			<li>
-				<a href="#">
+			<li class="{{ Request::is('admin/products*') ? 'active' : '' }}">
+				<a href="{{ route('viewProducts') }}">
 					<i class='bx bxs-shopping-bag-alt' ></i>
-					<span class="text">My Store</span>
+					<span class="text">Products</span>
 				</a>
 			</li>
-			<li>
-				<a href="#">
+			<li class="{{ Request::is('admin/orders*') ? 'active' : '' }}">
+				<a href="{{ route('viewOrders') }}">
 					<i class='bx bxs-doughnut-chart' ></i>
-					<span class="text">Analytics</span>
+					<span class="text">Orders</span>
 				</a>
 			</li>
-			<li>
-				<a href="#">
+			<li class="{{ Request::is('admin/sellers*') ? 'active' : '' }}">
+				<a href="{{ route('viewSellers') }}">
 					<i class='bx bxs-message-dots' ></i>
-					<span class="text">Message</span>
+					<span class="text">Sellers</span>
 				</a>
 			</li>
-			<li>
-				<a href="#">
+			<li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
+				<a href="{{ route('viewUsers') }}">
 					<i class='bx bxs-group' ></i>
-					<span class="text">Team</span>
+					<span class="text">Users</span>
 				</a>
 			</li>
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="#">
-					<i class='bx bxs-cog' ></i>
-					<span class="text">Settings</span>
-				</a>
-			</li>
-			<li>
-				<a href="#" class="logout">
+				<a href="{{ route('logout') }}" class="logout">
 					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Logout</span>
 				</a>

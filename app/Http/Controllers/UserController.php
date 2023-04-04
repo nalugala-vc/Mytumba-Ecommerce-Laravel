@@ -12,73 +12,117 @@ class UserController extends Controller
 {
     public function productView($product){
         $product = Product::findOrFail($product);
+        $cartCount = null;
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
 
         return view('users.productView',[
             'product' => $product,
+            'cartCount' => $cartCount
         ]);
     }
     public function userCart(){
         if(!Auth::user()){
             return redirect('/login')->with('error','Please login to view your cart');
         }
+        $cartCount = null;
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
 
         $cartItems = Cart::where('user_id', Auth::user()->id)
         ->orderBy('created_at', 'desc')
-        ->with('product:id,name,category,price', 'product.categoryP:id,category_name')
+        ->with('product:id,name,category,price,discount_present,discount_price', 'product.categoryP:id,category_name')
         ->get();
 
 
 
         return view('users.cartItems',[
-            'cartItems' => $cartItems
+            'cartItems' => $cartItems,
+            'cartCount' => $cartCount
         ]);
     }
 
     public function womenProducts(){
         $products = Product::where('category',2)->get();
+        $cartCount = null;
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
 
         return view('users.women',[
-            'products' => $products
+            'products' => $products,
+            'cartCount' => $cartCount
         ]);
 
     }
 
     public function menProducts(){
         $products = Product::where('category',1)->get();
+        $cartCount = null;
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
 
         return view('users.men',[
-            'products' => $products
+            'products' => $products,
+            'cartCount' => $cartCount
         ]);
     }
 
     public function kidsProducts(){
         $products = Product::where('category',3)->get();
+        $cartCount = null;
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
 
         return view('users.kids',[
-            'products' => $products
+            'products' => $products,
+            'cartCount' => $cartCount
         ]);
     }
 
     public function addToCart(){
-        if(!Auth::user()){
-            return redirect('/login')->with('error','Please login to add to cart');
+        if (!Auth::user()) {
+            return response()->json([ 
+                'redirect' => '/login',        
+                'message' => 'Please login to add to cart'   
+            ]);
         }
-
+        
         $cartItem = Cart::where('product_id',request()->product_id)->where('user_id',Auth::user()->id)->first();
+        $quantity = 1;
 
         if($cartItem){
-            return redirect()->back()->with('error','Item already in cart');
+            return response()->json(['status' => 'error', 'message' => 'Item already in cart','statuscode'=> 403]);
+        }
+
+        if(request()->quantity ){
+            $quantity = request()->quantity;
         }
 
         Cart::create([
             'user_id' => Auth::user()->id,
-            'product_id' => request()->product_id
+            'product_id' => request()->product_id,
+            'quantity' => $quantity
         ]);
 
-        return redirect()->back()->with('success', 'Item added to cart successfully')->withFragment('#top-picks');
+        return response()->json(['status' => 'success', 'message' => 'Item added to cart successfully','statuscode'=> 200]);
 
 
     }
+
+    public function getCartCount()
+    {
+        $cartCount = 0;
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
+        return response()->json(['cartCount' => $cartCount]);
+    }
+
 
     public function removeFromCart($cartItem){
         $cartItem = Cart::findOrFail($cartItem);
@@ -110,7 +154,185 @@ class UserController extends Controller
 
         $wishList->delete();
 
-        return redirect()->back()->with('success','Item removed from wishlist successfully');
+        return response()->json(['status' => 'success', 'message' => 'Item removed from cart successfully','statuscode'=> 200]);
+    }
+
+    public function filterWomen($myParam){
+        $param = $myParam;
+        $products = null;
+
+
+        switch ($param) {
+        case 'zip_jackets':
+            $products = Product::where('category', 2)
+                    ->where('sub_category', 'zip jackets')
+                    ->get();
+            break;
+        case 'dresses':
+            $products = Product::where('category', 2)
+                    ->where('sub_category', 'dresses')
+                    ->get();
+            break;
+        case 'jogging':
+            $products = Product::where('category', 2)
+                    ->where('sub_category', 'jogging pants')
+                    ->get();
+            break;
+        case 'hoodies':
+            $products = Product::where('category', 2)
+                    ->where('sub_category', 'hoodies')
+                    ->get();
+            break;
+        case 'highest':
+            $products = Product::where('category', 2)
+                    ->orderBy('price', 'desc')
+                    ->get();
+            break;
+        case 'lowest':
+            $products = Product::where('category', 2)
+            ->orderBy('price', 'asc')
+            ->get();
+            break;
+        case 'new':
+            $products = Product::where('category', 2)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            break;
+        case 'old':
+            $products = Product::where('category', 2)
+                    ->orderBy('created_at', 'asc')
+                    ->get();
+            break;
+        default:
+            $products = Product::where('category', 2)
+                ->get();
+        }
+
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
+
+        return response()->json([
+            'products' => $products->toArray(),
+        ]);
+
+    }
+
+    public function filterKids($myParam){
+        $param = $myParam;
+        $products = null;
+
+
+        switch ($param) {
+        case 'zip_jackets':
+            $products = Product::where('category', 3)
+                    ->where('sub_category', 'zip jackets')
+                    ->get();
+            break;
+        case 'dresses':
+            $products = Product::where('category', 3)
+                    ->where('sub_category', 'dresses')
+                    ->get();
+            break;
+        case 'jogging':
+            $products = Product::where('category', 3)
+                    ->where('sub_category', 'jogging pants')
+                    ->get();
+            break;
+        case 'hoodies':
+            $products = Product::where('category', 3)
+                    ->where('sub_category', 'hoodies')
+                    ->get();
+            break;
+        case 'highest':
+            $products = Product::where('category', 3)
+                    ->orderBy('price', 'desc')
+                    ->get();
+            break;
+        case 'lowest':
+            $products = Product::where('category', 3)
+            ->orderBy('price', 'asc')
+            ->get();
+            break;
+        case 'new':
+            $products = Product::where('category', 3)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            break;
+        case 'old':
+            $products = Product::where('category', 3)
+                    ->orderBy('created_at', 'asc')
+                    ->get();
+            break;
+        default:
+            $products = Product::where('category', 3)
+                ->get();
+        }
+
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
+
+        return response()->json([
+            'products' => $products->toArray(),
+        ]);
+
+    }
+
+    public function filterMen($myParam){
+        $param = $myParam;
+        $products = null;
+
+
+        switch ($param) {
+        case 'zip_jackets':
+            $products = Product::where('category', 1)
+                    ->where('sub_category', 'zip jackets')
+                    ->get();
+            break;
+        case 'jogging':
+            $products = Product::where('category', 1)
+                    ->where('sub_category', 'jogging pants')
+                    ->get();
+            break;
+        case 'hoodies':
+            $products = Product::where('category', 1)
+                    ->where('sub_category', 'hoodies')
+                    ->get();
+            break;
+        case 'highest':
+            $products = Product::where('category', 1)
+                    ->orderBy('price', 'desc')
+                    ->get();
+            break;
+        case 'lowest':
+            $products = Product::where('category', 1)
+            ->orderBy('price', 'asc')
+            ->get();
+            break;
+        case 'new':
+            $products = Product::where('category', 1)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            break;
+        case 'old':
+            $products = Product::where('category', 1)
+                    ->orderBy('created_at', 'asc')
+                    ->get();
+            break;
+        default:
+            $products = Product::where('category', 1)
+                ->get();
+        }
+
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
+
+        return response()->json([
+            'products' => $products->toArray(),
+        ]);
+
     }
 
 
@@ -127,10 +349,15 @@ class UserController extends Controller
     public function confirmOrder(){
         $items = session()->get('items');
         $orderTotal = session()->get('orderTotal');
+        $cartCount = null;
+        if(Auth::user()){
+            $cartCount = Cart::where('user_id', Auth::user()->id)->count();
+        }
 
         return view('users.confirmOrder',[
             'items'=>$items,
-            'orderTotal'=>$orderTotal
+            'orderTotal'=>$orderTotal,
+            'cartCount'=>$cartCount
         ]);
     }
 

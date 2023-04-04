@@ -12,6 +12,10 @@
         </li>
     </ul>
 </div>
+<a href="{{ route('viewUsers')}}" class="btn-download">
+    <i class='bx bxs-user-account'></i>
+    <span class="text">View Users</span>
+</a>
 @endsection
 @if (session('success'))
 <div

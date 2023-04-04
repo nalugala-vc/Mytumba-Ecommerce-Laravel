@@ -1,4 +1,4 @@
-@extends('layouts.userForms')
+@extends('layouts.userlayout')
 
 @section('content')
 @if (session('success'))
@@ -62,4 +62,20 @@
     </div>
     </div>
 </form>
+<script>
+  window.onload = function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var errorMsg = urlParams.get('errorMsg');
+    if (errorMsg) {
+      var popup = document.createElement('div');
+      popup.classList.add('cart-popup-error');
+      popup.textContent = decodeURIComponent(errorMsg);
+      document.body.appendChild(popup);
+      setTimeout(function() {
+        popup.style.display = 'none';
+      }, 3000);
+    }
+  };
+</script>
+
 @endsection

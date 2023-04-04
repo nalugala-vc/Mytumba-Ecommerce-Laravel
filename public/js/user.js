@@ -1,49 +1,67 @@
-const buttons = document.querySelectorAll("[data-carousel-button]");
-const slides = document.querySelector("[data-slides]");
-let activeSlide = slides.querySelector("[data-active]");
-let intervalId;
 
-function changeSlide(offset) {
-  let newIndex = [...slides.children].indexOf(activeSlide) + offset;
-  if (newIndex < 0) newIndex = slides.children.length - 1;
-  if (newIndex >= slides.children.length) newIndex = 0;
 
-  slides.children[newIndex].dataset.active = true;
-  delete activeSlide.dataset.active;
-  activeSlide = slides.querySelector("[data-active]");
-}
+// /* Function to close navigation menu */
+// function closeMenu() {
+//   menu.classList.remove("open-menu");
+//   body.style.overflow = "visible";
+//   bodyOverlay.classList.remove("open-overlay");
+//   menuBtnImg.src = "images/icon-menu.svg";
+// }
 
-function startCarousel() {
-  intervalId = setInterval(() => {
-    changeSlide(1);
-  }, 3000);
-}
+// /* Function to open navigation menu */
 
-startCarousel();
+// function openMenu() {
+//   menu.classList.add(".open-menu");
+//   menuBtnImg.src = "images/icon-close.svg";
+//   body.style.overflow = "hidden";
+//   cart.classList.remove("open-cart");
+//   bodyOverlay.classList.add("open-overlay");
+// }
 
-buttons.forEach(button => {
-  button.addEventListener("click", () => {
-    clearInterval(intervalId);
-    changeSlide(button.dataset.carouselButton === "next" ? 1 : -1);
-    startCarousel();
+const burger = document.querySelector(".burger");
+  const navLinks = document.querySelector(".nav-links");
+  const nav = document.querySelector("nav");
+
+  burger.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+    burger.classList.toggle("toggle");
+    nav.classList.toggle("active");
   });
-});
 
-/* Function to close navigation menu */
-function closeMenu() {
-  menu.classList.remove("open-menu");
-  body.style.overflow = "visible";
-  bodyOverlay.classList.remove("open-overlay");
-  menuBtnImg.src = "images/icon-menu.svg";
+//popup timer
+const successMessage = document.querySelector('.cart-popup-success');
+  const errorMessage = document.querySelector('.cart-popup-error');
+  
+  // set timer for success message
+  if (successMessage) {
+    setTimeout(function() {
+      successMessage.style.display = 'none';
+    }, 3000); // 3 seconds
+  }
+  
+  // set timer for error message
+  if (errorMessage) {
+    setTimeout(function() {
+      errorMessage.style.display = 'none';
+    }, 3000); // 3 seconds
+  }
+//update cart
+function updateCartNotification() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/cart/count', true);
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      var response = JSON.parse(xhr.responseText);
+      var cartNotification = document.querySelector('.cart-notification');
+      if (cartNotification) {
+        cartNotification.innerHTML = response.cartCount;
+      }
+    }
+  };
+  xhr.send();
 }
 
-/* Function to open navigation menu */
+updateCartNotification();
 
-function openMenu() {
-  menu.classList.add(".open-menu");
-  menuBtnImg.src = "images/icon-close.svg";
-  body.style.overflow = "hidden";
-  cart.classList.remove("open-cart");
-  bodyOverlay.classList.add("open-overlay");
-}
-
+// set an interval to refresh the cart count every 5 seconds
+setInterval(updateCartNotification, 1000);

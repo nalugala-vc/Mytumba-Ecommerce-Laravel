@@ -12,6 +12,10 @@
         </li>
     </ul>
 </div>
+<a href="{{ route('viewSellers')}}" class="btn-download">
+    <i class='bx bxs-user-account'></i>
+    <span class="text">View Users</span>
+</a>
 @endsection
 @section ('content')
 <form id="editUser" method="POST" action="{{ route('registerUser') }}" enctype="multipart/form-data">

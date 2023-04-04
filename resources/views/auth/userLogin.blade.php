@@ -1,4 +1,4 @@
-@extends('layouts.userForms')
+@extends('layouts.userlayout')
 
 @section('content')
 @if (session('success'))

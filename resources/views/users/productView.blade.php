@@ -5,126 +5,16 @@
     $images = explode('|',$image->pictures)
 @endphp
 <div class="body-wrapper"></div>
-
-    <!-- Overlay image Modal -->
-    <div class="overlay-container">
-      <div class="item-overlay">
-        <button class="item-overlay__btn">
-          <img
-            src="/assets/icon-close.svg"
-            alt="close image"
-            class="item-overlay__btn-img"
-          />
-        </button>
-        <div class="item-overlay__mainImg">
-          <img
-            src="/assets/image-product-1.jpg"
-            alt=""
-            class="item-overlay__img"
-          />
-          <button class="item-overlay__btnlft overlay-btn">
-            <img
-              src="/assets/icon-next.svg"
-              alt="next symbol image"
-              class="item-overlay__btnlft-img overlay-btn__img"
-            />
-          </button>
-          <button class="item-overlay__btnrgt overlay-btn">
-            <img
-              src="/assets/icon-next.svg"
-              alt="next symbol image"
-              class="item-overlay__btnrgt-img overlay-btn__img"
-            />
-          </button>
-        </div>
-        <div class="overlay-img__btns">
-          <button class="overlay-img__btn" data-img="0">
-            <img
-              src="/assets/image-product-1-thumbnail.jpg"
-              alt="shoe product image"
-              class="overlay-img__btn-img"
-            />
-          </button>
-          <button class="overlay-img__btn" data-img="1">
-            <img
-              src="/assets/image-product-2-thumbnail.jpg"
-              alt="shoe product image"
-              class="overlay-img__btn-img"
-            />
-          </button>
-          <button class="overlay-img__btn" data-img="2">
-            <img
-              src="/assets/image-product-3-thumbnail.jpg"
-              alt="shoe product image"
-              class="overlay-img__btn-img"
-            />
-          </button>
-          <button class="overlay-img__btn" data-img="3">
-            <img
-              src="/assets/image-product-4-thumbnail.jpg"
-              alt="shoe product image"
-              class="overlay-img__btn-img"
-            />
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Cart -->
-    <div class="head-cart">
-      <h3 class="head-cart__heading">Cart</h3>
-      <div class="head-cart__txt">Your cart is empty.</div>
-      <div class="head-cart__item">
-        <div class="head-cart__item-wrapper">
-          <img
-            src="/assets/image-product-1-thumbnail.jpg"
-            alt="cart product image"
-            class="head-cart__item-img"
-          />
-          <div class="head-cart__des">
-            <p class="head-cart__des-txt">{{$product->name}}</p>
-            <div class="head-cart__price">
-              <span class="head-cart__price-single">$125.00*3</span>
-              <span class="head-cart__price-total">$375.00</span>
-            </div>
-          </div>
-          <button class="head-cart__item-btn">
-            <img
-              src="/assets/icon-delete.svg"
-              alt="delete image"
-              class="head-cart__btn-img"
-            />
-          </button>
-        </div>
-
-        <button class="head-cart__btn btn--orange">Checkout</button>
-      </div>
-    </div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Header -->
 
     <!-- Main item container -->
     <main class="item">
       <section class="img">
-        <button class="img-main__btnlft img-main__btn">
-          <img
-            src="/assets/icon-next.svg"
-            alt="next symbol image"
-            class="img-main__btnlft-img img-main__btn-img"
-          />
-        </button>
-        <button class="img-main__btnrgt img-main__btn">
-          <img
-            src="/assets/icon-next.svg"
-            alt="next symbol image"
-            class="img-main__btnrgt-img img-main__btn-img"
-          />
-        </button>
         <div class="img-main">
             <img src="/assets/{{$images[0]}}" alt="" />
         </div>
-        
-        
       </section>
 
       <section class="price">
@@ -135,39 +25,50 @@
         </p>
         <div class="price-box">
           <div class="price-box__main">
-            <span class="price-box__main-new">{{$product->price}}</span>
-            <span class="price-box__main-discount"> 50%</span>
+            <span class="price-box__main-new">
+              @if($product->discount_present == 'true')
+              {{ $product->discount_price}}
+              @else
+              {{$product->price}}
+              @endif
+            </span>
+            @if($product->discount_present == 'true')
+              @php
+              $discountPrice = $product->discount_price;
+              $actualPrice = $product->price;
+              $percentage =100 - round(($discountPrice/$actualPrice)*100);
+            @endphp
+            <span class="price-box__main-discount"> 
+              {{$percentage}} %
+            </span>
+            @endif
           </div>
-          <span class="price-box__old">$250.00</span>
+          @if($product->discount_present == 'true')
+          <span class="price-box__old">{{$product->price}}</span>
+          @endif
         </div>
-
+        <div id="quantity" style="display: none;">
+          {{$product->quantity}}
+        </div>
+        <div class="productId" style="display: none;">
+          {{$product->id}}
+        </div>
         <div class="price-btnbox">
           <div class="price-btns">
             <button class="price-btn__add price-btn">
-              <img
-                src="/assets/icon-plus.svg"
-                alt="plus sign"
-                class="price-btn__add-img price-btn__img"
-              />
+              <i class="uil uil-plus"></i>
             </button>
-            <span class="price-btn__txt">0</span>
+            <span class="price-btn__txt">1</span>
             <button class="price-btn__remove price-btn">
-              <img
-                src="/assets/icon-minus.svg"
-                alt="minus sign"
-                class="price-btn__remove-img price-btn__img"
-              />
+              <i class="uil uil-minus"></i>
             </button>
           </div>
           <button class="price-cart__btn btn--orange">
-            <img
-              src="/assets/icon-cart.svg"
-              alt="cart image"
-              class="price-cart__btn-img"
-            />
-            Add to cart
+            <i class="uil uil-shopping-cart"></i>
+            <span>Add to cart</span>
           </button>
         </div>
       </section>
     </main>
+    <script src="{{ asset('js/productView.js') }}"></script>
 @endsection

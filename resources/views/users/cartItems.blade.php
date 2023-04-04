@@ -1,23 +1,10 @@
-@extends('layouts.cartLayout')
+@extends('layouts.userLayout')
 @section('content')
-@if (session('success'))
-<div
-    class="cart-popup-success"
-    >
-    {{ session('success') }}
-    </div>
-@endif
-@if (session('error'))
-<div
-    class="cart-popup-error"
-    >
-    {{ session('error') }}
-    </div>
-@endif
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <section class="cart-holder">
     <div class="cart-items">
-        <div class="cart-div"style="padding:0 60px">
+        <div class="cart-div">
         <div class="main-title">
             <div>
                 <h1>Shopping cart</h1>
@@ -59,18 +46,30 @@
                     <td>
                         <div class="quantity-div">
                             <button type="button" id="subtract-{{$cartItem->id}}"><i class="fa-solid fa-minus" class="quantity-control"></i></button>
-                            <div><p id="quantity-{{$cartItem->id}}">1</p></div>
+                            <div><p id="quantity-{{$cartItem->id}}">{{$cartItem->quantity}}</p></div>
                             <button type="button" id="add-{{$cartItem->id}}"><i class="fa-solid fa-plus" class="quantity-control"></i></button>
                         </div>
                     </td>
                     <td>
                         <div class="price">
-                            <h4 id="price-{{$cartItem->id}}">{{$cartItem->product->price}}</h4>
+                            <h4 id="price-{{$cartItem->id}}">
+                                @if($cartItem->product->discount_present == 'true')
+                                {{$cartItem->product->discount_price}}
+                                @else
+                                {{$cartItem->product->price}}
+                                @endif
+                            </h4>
                         </div>
                     </td>
                     <td>
                         <div class="total">
-                            <h4 id="total-{{$cartItem->id}}"> {{$cartItem->product->price}}</h4>
+                            <h4 id="total-{{$cartItem->id}}">
+                                @if($cartItem->product->discount_present == 'true')
+                                {{$cartItem->product->discount_price * $cartItem->quantity}}
+                                @else
+                                {{$cartItem->product->price * $cartItem->quantity}}
+                                @endif
+                            </h4>
                         </div>
                     </td>
                 </tr>
@@ -80,11 +79,12 @@
 
         </table>
         </div>
+        @if($cartItems)
         <div class="order-summary">
             <h2>Order Summary</h2>
             <div class="items">
-                <h4>ITEMS  {{$cartItem->count()}}</h4>
-                <h4>KSH. <p id="order-subtotal">838.90</p></h4>
+                <h4>ITEMS  {{$cartItems->count()}}</h4>
+                <h4>KSH. <p id="order-subtotal"></p></h4>
             </div>
             <div class="items">
                 <h4>SHIPPING</h4>
@@ -101,6 +101,7 @@
             </div>
             <button id="checkout">CHECKOUT</button>
         </div>
+        @endif
     </div>
 </section>
 <script>
@@ -109,16 +110,20 @@
     let itemData = cartItems.map(item => ({ id: item.id, quantity: 1 ,name:item.product.name,totalPrice: item.product.price}));
 
     var orderTotal = 0;
+    var orderSubtotal = 0;
 
 cartItems.forEach(item => {
     const removeItems = document.getElementById(`subtract-${item.id}`);
     const addItems = document.getElementById(`add-${item.id}`);
     const quantityElement = document.getElementById(`quantity-${item.id}`);
-    const priceElement = parseFloat(item.product.price); // convert to number
+    const priceElement = parseFloat(document.getElementById(`price-${item.id}`).textContent); 
+
+    // convert to number
     const totalElement = document.getElementById(`total-${item.id}`);
     
     // Add the price of the current item to the order total
     orderTotal += priceElement * parseInt(quantityElement.innerText);
+    orderSubtotal += priceElement * parseInt(quantityElement.innerText);
 
     addItems.addEventListener('click', function() {
         var quantity = parseInt(quantityElement.innerText);
@@ -136,7 +141,7 @@ cartItems.forEach(item => {
 
         // Update the quantity and total elements
         quantityElement.innerText = quantity;
-        totalElement.innerText = 'KSH. ' + total;
+        totalElement.innerText =  total;
 
         // Add the new total for this item
         orderTotal += parseFloat(total);
@@ -151,7 +156,6 @@ cartItems.forEach(item => {
         // Update the order total
         updateOrderTotal();
 
-        console.log('itemData',itemData)
     });
     
     removeItems.addEventListener('click', function() {
@@ -170,10 +174,12 @@ cartItems.forEach(item => {
 
         // Update the quantity and total elements
         quantityElement.innerText = quantity;
-        totalElement.innerText = 'KSH. ' + total;
+        totalElement.innerText =  total;
 
         // Add the new total for this item
         orderTotal += parseFloat(total);
+        orderSubtotal += parseFloat(total);
+
 
         // Update the quantity in the itemData array
         const itemIndex = itemData.findIndex(i => i.name === item.name);
@@ -185,26 +191,28 @@ cartItems.forEach(item => {
         // Update the order total
         updateOrderTotal();
 
-        console.log('itemData',itemData);
     });
 
 });
 
 // Display the order total in a paragraph tag
 const orderTotalElement = document.getElementById('order-total');
-orderTotalElement.innerText = 'KSH. ' + orderTotal.toFixed(2);
+orderTotalElement.innerText = orderTotal.toFixed(2);
+const orderSubtotalElement = document.getElementById('order-subtotal');
+orderSubtotalElement.innerText = orderTotal.toFixed(2);
 
 function updateOrderTotal() {
     // Update the order total
     const orderTotalElement = document.getElementById('order-total');
-    orderTotalElement.innerText = 'KSH. ' + orderTotal.toFixed(2);
+    const orderSubtotalElement = document.getElementById('order-subtotal');
+    orderTotalElement.innerText =  orderTotal.toFixed(2);
+    orderSubtotalElement.innerText =  orderTotal.toFixed(2);
 }
 
 const checkoutElement = document.getElementById('checkout');
 
 checkoutElement.addEventListener('click',function(event) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    console.log(csrfToken);
     fetch('/orderItems', {
     method: 'POST',
     headers: {
@@ -221,7 +229,6 @@ checkoutElement.addEventListener('click',function(event) {
     if (response.redirected) {
         window.location.href = response.url;
     }
-    console.log(response);
 })
 .catch(error => {
     // Handle any errors that occur

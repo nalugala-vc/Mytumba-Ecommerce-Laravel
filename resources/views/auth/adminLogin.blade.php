@@ -1,4 +1,4 @@
-@extends('layouts.userForms')
+@extends('layouts.userlayout')
 
 @section('content')
 <form method="POST" action="{{ route('submitAdminLogin') }}" enctype="multipart/form-data" id="reg-form">

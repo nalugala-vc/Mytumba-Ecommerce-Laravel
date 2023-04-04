@@ -1,7 +1,7 @@
 @extends('layouts.adminLayout')
 @section ('head-title')
 <div class="left">
-    <h1>Add New User</h1>
+    <h1>Add New Seller</h1>
     <ul class="breadcrumb">
         <li>
             <a href="#">Dashboard</a>
@@ -12,6 +12,10 @@
         </li>
     </ul>
 </div>
+<a href="{{ route('viewSellers')}}" class="btn-download">
+    <i class='bx bxs-user-account'></i>
+    <span class="text">View Sellers</span>
+</a>
 @endsection
 @section ('content')
 <form id="editUser" method="POST" action="{{ route('registerSeller') }}" enctype="multipart/form-data">
