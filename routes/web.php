@@ -62,7 +62,6 @@ Route::get('/filter/women/{param}',[UserController::class,'filterWomen'])->name(
 Route::get('filter/men/{param}',[UserController::class,'filterMen'])->name('filterMen');
 Route::get('filter/kids/{param}',[UserController::class,'filterKids'])->name('filterKids');
 
-
 /*SELLER ROUTES*/
 Route::get('/seller',[SellerController::class,'index'])->name('seller');
 

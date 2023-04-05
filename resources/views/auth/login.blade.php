@@ -56,8 +56,8 @@
     </div>
     <div class="mb">
         <div class="col-md-6 offset-md-4">
-            <p>Already have an account?</p>
-            <a href="">Sign In</a>
+            <p>Don't have an account?</p>
+            <a href="/register">Sign Up</a>
         </div>
     </div>
     </div>

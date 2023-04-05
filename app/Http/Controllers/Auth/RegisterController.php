@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RegistrationMail;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -72,6 +75,21 @@ class RegisterController extends Controller
         $file = request()->profile_image;
         $filename = time() . '.' . $file->getClientOriginalExtension();
         $file->move('assets', $filename);
+
+        $name = request()->first_name;
+        $email = request()->email;
+
+        $exists=DB::table('users')->where('email', request()->email)->exists();
+        if($exists){
+            return redirect()->back()->with('error','Email already exists');
+        }
+
+
+        try{
+            Mail::to(request()->email)->send(new RegistrationMail($name,$email));
+        }catch(Exception $th){
+            return redirect()->back()->with('error','something went wrong' .$th);
+        }
     
         return User::create([
             'first_name' => $data['first_name'],

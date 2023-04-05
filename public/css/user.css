@@ -338,13 +338,13 @@ nav .nav-links::-webkit-scrollbar-thumb {
 }
 .top-picks .img-div .cart {
   position: absolute;
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: #3C91E6;
+  color: #fff;
   margin: 5px;
   top: 0;
   right: 0;
@@ -389,6 +389,10 @@ nav .nav-links::-webkit-scrollbar-thumb {
   bottom: 0;
   left: 0;
   border: none;
+}
+.top-picks .img-div .wish i{
+  font-size: 20px;
+  font-weight: 600;
 }
 .top-picks .img-div .wish:hover{
   cursor: pointer;

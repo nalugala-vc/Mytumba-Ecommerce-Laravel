@@ -71,18 +71,21 @@
             <form id="addToCartForm-{{$product->id}}">
                 @csrf
                 <input type="hidden" name="product_id" value="{{$product->id}}">
-                <button class="cart" id="addToCart-{{$product->id}}" onclick="addToCart({{$product->id}})">
+                <button class="wish" id="addToCart-{{$product->id}}" onclick="addToCart({{$product->id}})">
                   <i class="uil uil-shopping-cart"></i>
                 </button> 
             </form>
                 <img src="/assets/{{$images[0]}}" alt="Zip jacket" />
-                <form action="{{ route('addToCart') }}" method="POST">
-                  @csrf
-                  <input type="hidden" name="product_id" value="{{$product->id}}">
-                <button class="wish">
-                  <i class="uil uil-heart"></i>
+                @if($product->discount_present == "true")
+                @php
+                $discountPrice = $product->discount_price;
+                $actualPrice = $product->price;
+                $percentage =100 - round(($discountPrice/$actualPrice)*100);
+                @endphp
+                <button class="cart">
+                  -{{$percentage}}%
                 </button>
-                </form>
+                @endif
             </div>
             <div class="info-div">
                 <div class="ratings">
@@ -220,7 +223,11 @@
   xhr.onload = function () {
     // Handle the response from the server
     var response = JSON.parse(xhr.responseText);
-    if (response.status === 'success' && response.statuscode === 200) {
+    if(response.redirect){
+      var errorMsg = encodeURIComponent('Please login to view your cart.');
+      window.location.href = response.redirect + '?errorMsg=' + errorMsg;
+    }
+    else if (response.status === 'success' && response.statuscode === 200) {
           var successMsg = document.createElement('div');
           successMsg.classList.add('cart-popup-success');
           successMsg.textContent = 'Item added to cart!';
