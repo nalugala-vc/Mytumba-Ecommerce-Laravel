@@ -47,6 +47,7 @@ addButton.addEventListener('click', function() {
     })
     .then(response => {
       // Handle the response from the server
+      console.log(response)
       if (response.redirected) {
           window.location.href = response.url;
       } else {
@@ -58,7 +59,10 @@ addButton.addEventListener('click', function() {
           const message = data.message;
           console.log(message);
           // Display the message in the popup
-          if(data.statuscode === 403){
+          if(data.redirect){
+            var errorMsg = encodeURIComponent('Please login to add to cart.');
+            window.location.href = data.redirect + '?errorMsg=' + errorMsg;
+          }else if(data.statuscode === 403){
             var errorMsg = document.createElement('div');
             errorMsg.classList.add('cart-popup-error');
             errorMsg.textContent = 'Item already in cart.';

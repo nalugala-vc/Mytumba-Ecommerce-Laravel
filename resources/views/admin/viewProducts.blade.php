@@ -12,7 +12,7 @@
         </li>
     </ul>
 </div>
-<a href="{{ route('viewProducts')}}" class="btn-download">
+<a href="{{ route('addNewProduct')}}" class="btn-download">
     <i class='bx bx-shopping-bag' ></i>
     <span class="text">Add new products</span>
 </a>

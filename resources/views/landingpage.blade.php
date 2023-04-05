@@ -224,7 +224,7 @@
     // Handle the response from the server
     var response = JSON.parse(xhr.responseText);
     if(response.redirect){
-      var errorMsg = encodeURIComponent('Please login to view your cart.');
+      var errorMsg = encodeURIComponent('Please login to add to cart.');
       window.location.href = response.redirect + '?errorMsg=' + errorMsg;
     }
     else if (response.status === 'success' && response.statuscode === 200) {

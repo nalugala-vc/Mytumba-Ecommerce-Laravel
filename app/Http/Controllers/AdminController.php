@@ -15,18 +15,13 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth:admin');
-    }
-
     public function index() {
         $totalUsers = User::all()->count();
         $totalProducts = Product::all()->count();
         $totalOrders = Order::all()->count();
         $totalSellers = Seller::all()->count();
-        $recentOrders = Product::latest()->count();
-        $recentUsers = User::latest()->get();
+        $recentOrders = Product::latest()->take(5)->count();
+        $recentUsers = User::latest()->take(5)->get();
         return view('admin.adminDash',[
             'totalUsers' => $totalUsers,
             'totalProducts' => $totalProducts,
@@ -254,6 +249,7 @@ class AdminController extends Controller
     public function addProduct(){
         // dd(request());
         $picturesArray= array();
+        $discount_price = 0;
 
     
         $files = request()->pictures;
@@ -268,6 +264,11 @@ class AdminController extends Controller
             $product['seller_id'] = request()->seller_id;
         }
 
+        if(request()->discount_price){
+            $product['discount_price'] = request()->discount_price;
+        }
+
+
         $product['name'] = request()->name;
         $product['description'] = request()->description;
         $product['pictures'] = implode('|', $picturesArray);
@@ -279,7 +280,6 @@ class AdminController extends Controller
         $product['sub_category'] = request()->sub_category;
         $product['category'] = request()->category;
         $product['discount_present'] = request()->discount_present;
-        $product['discount_price'] = request()->discount_price;
 
         $addProduct = Product::create($product);
 
