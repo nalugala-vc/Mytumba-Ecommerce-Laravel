@@ -22,17 +22,17 @@
     <button class="carousel-button next" data-carousel-button = "next"><i class="fa-solid fa-caret-right"></i></button>
     <ul data-slides>
       <li class="slide" data-active>
-        <img src="/assets/slider (1).jpg" alt="">
+        <img src="/assets/slide (1).jpeg" alt="">
       </li>
       <li class="slide">
-        <img src="/assets/slider (2).jpg" alt="">
+        <img src="/assets/slide (2).jpeg" alt="">
       </li>
       <li class="slide">
-        <img src="/assets/slider (3).jpg" alt="">
+        <img src="/assets/slide (3).jpeg" alt="">
       </li>
-      <li class="slide">
+      <!-- <li class="slide">
         <img src="/assets/slider (4).jpg" alt="">
-      </li>
+      </li> -->
     </ul>
   </div>
 </section>
